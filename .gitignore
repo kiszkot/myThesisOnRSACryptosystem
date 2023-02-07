@@ -7,6 +7,7 @@ ssl_attack/target
 *.synctex.gz
 *.log
 *.vscode
+*.out
 
 WebServer/test.py
 ssl_attack/.git

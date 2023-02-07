@@ -345,7 +345,8 @@ fn main() {
         2 => factor_n_example(),
         3 => {
             if args.len() > 3 {
-                bleichenbacher_example(args[2].clone(), args[3].parse::<u16>().unwrap());
+                bleichenbacher_example(args[2].clone(), 
+                    args[3].parse::<u16>().unwrap());
             } else {
                 println!("Needs host and port argument!");
             }

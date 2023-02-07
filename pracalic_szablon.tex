@@ -112,6 +112,15 @@
 %% brak numeracji strony na pierwszej stronie rozdzia�u
 \usepackage{nopageno}
 
+\usepackage[hidelinks]{hyperref}
+\hypersetup{
+    colorlinks=false,
+    linkcolor=black,
+    filecolor=black,      
+    urlcolor=black,
+}
+\urlstyle{same}
+
 
 \makeatletter
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -243,7 +252,9 @@ Składam serdecznie podziękowania
 \chapter*{Wstęp}
 Kryptografia i systemy kryptograficzne miały głównie zastosowanie w wojskach jako bezpieczna metoda komunikacji. Systemy kryptograficzne z kluczem publicznym natomiast pojawiły się dopiero w 1978 gdy Rivest, Shamir i Adleman wynaleźli pierwszy system kryptograficzny z kluczem publicznym. Ten system nazywany jest teraz RSA zostanie on omówiony. Wraz z pojawieniem się nowego systemu pojawiały się problemy implementacji jak i możliwe na niego ataki. Ponieważ jest to system tylko teoretyczne bezpieczny to jest on co raz mniej wykorzystywany. Natomiast ataki na ten system są interesujące ze względu matematycznego jak i implementacji. \\
 
-Praca składa się z czterech rozdziałów. W pierwszym opisane są podstawowe pojęcia matematyczne oraz sam system RSA. Pojęcia jak rozszerzony algorytm Euklidesa lub samo działanie systemu RSA zostały poprzedzone przykładami. W drugim rozdziale jest opisany protokół SSL.TLS. Jest to natomiast temat wymagający osobną pracę, zatem został on opisany na podstawie przykładu, co powinno ułatwić zrozumienie podstawowych działań. Trzeci rozdział dedykowany jest opisem wybranych ataków na system RSA wraz z implementacją w kodzie tych ataków. Tam gdzie pojawia się implementacja w kodzie to został także przedstawiony własny przykład. Ostatni rozdział precyzuje atak z wybranym szyfrogramem Bleichenbachera na podstawie własnego serwera.
+Praca składa się z czterech rozdziałów. W pierwszym opisane są podstawowe pojęcia matematyczne oraz sam system RSA. Pojęcia jak rozszerzony algorytm Euklidesa lub samo działanie systemu RSA zostały poprzedzone przykładami. W~drugim rozdziale jest opisany protokół SSL.TLS. Jest to natomiast temat wymagający osobną pracę, zatem został on opisany na podstawie przykładu, co powinno ułatwić zrozumienie podstawowych działań. Trzeci rozdział dedykowany jest opisem wybranych ataków na system RSA wraz z implementacją w kodzie tych ataków. Tam gdzie pojawia się implementacja w kodzie to został także przedstawiony własny przykład. Ostatni rozdział precyzuje atak z wybranym szyfrogramem Bleichenbachera na podstawie własnego serwera. \\
+
+Kody programów wraz z innymi ppotrzebnymi plikami można znaleźć na podanym linku \url{https://github.com/kiszkot/myThesisOnRSACryptosystem}
 
 
 
@@ -433,7 +444,7 @@ Odszyfrowanie wykonywane jest jak wcześniej przedstawiono. Wynik jest liczbą d
 \[ 4745505 = \text{Hi!} \]
 
 Poniżej przedstawiono kod wykorzystany do przykładu.
-\lstinputlisting[language=C,firstline=85,lastline=133,caption={./ssl\_attack/src/main.rs, od 85 do 133}]{./ssl_attack/src/main.rs}
+\lstinputlisting[language=C,firstline=156,lastline=204,caption={./ssl\_attack/src/main.rs, od 156 do 204}]{./ssl_attack/src/main.rs}
 
 
 \section{Wybrane testy pierwszości}
@@ -730,7 +741,7 @@ Ponieważ znany jest rozkład liczby $n$, to znana jest też wartość funkcji $
 \[ ed = 1 \pmod{\varphi(n)}. \]
 Do tego można wykorzystać rozszerzony algorytm Euklidesa którego implementacja została przedstawiona poniżej.
 
-\lstinputlisting[firstline=24,lastline=58,caption=./ssl\_attack/src/lib.rs od 24 do 58]{./ssl_attack/src/lib.rs}
+\lstinputlisting[firstline=28,lastline=62,caption=./ssl\_attack/src/lib.rs od 28 do 62]{./ssl_attack/src/lib.rs}
 
 Jeżeli natomiast znana jest liczba $d$, to należy obliczyć $k = ed - 1$. Z definicji klucza publicznego i prywatnego wiadomo, że $ed = 1 \pmod{\varphi(n)}$. Oznacza to, że liczba $k$ jest krotnością liczby $\varphi(n)$. Ponieważ ta liczba jest parzysta, to $k$ można zapisać jako $k = 2^tr$, gdzie $t\geq1$ i $r$ jest nieparzyste. Z twierdzenia Eulera wynika ponadto, że $g^k = 1$ dla każdej liczby $g \in {0,1,\ldots,n-1}$ względnie pierwszej z $n$. Oznacza to, że $g^{k/2}$ jest pierwiastkiem z jedności modulo $n$. Z chińskiego twierdzenia o resztach, liczba 1 ma cztery pierwiastki modulo iloczyn dwóch różnych liczb pierwszych. Dwa z nich są trywialne: $\pm1$. Pozostałe dwa są równe $\pm x$, gdzie liczba $x$ spełnia następujące warunki:
 \[ \left\{ \begin{array}{c} x = 1 \pmod{p}, \\ x = -1 \pmod{q}. \end{array}\right. \]
@@ -769,7 +780,7 @@ Przyjęto liczbę $g = 3$. Na podstawie powyższego algorytmu i korzystając z k
 &94751399006688831577.
 \end{align*}
 
-\lstinputlisting[firstline=116,lastline=156,caption=./ssl\_attack/src/main.rs od 116 do 156]{./ssl_attack/src/main.rs}
+\lstinputlisting[firstline=114,lastline=154,caption=./ssl\_attack/src/main.rs od 114 do 154]{./ssl_attack/src/main.rs}
 
 
 \section{Wspólny moduł \cite{survey}}
@@ -812,7 +823,7 @@ e = &3.
 \end{align*}
 Na podstawie informacji wcześniej przedstawionej, wypróbowano wartości $k$ od 1 do 10000 w celu odszyfrowania tajnej wiadomości. Poniżej przedstawiono kod programu.
 
-\lstinputlisting[firstline=74,lastline=114,caption=./ssl\_attack/src/main.rs od 74 do 114]{./ssl_attack/src/main.rs}
+\lstinputlisting[firstline=72,lastline=112,caption=./ssl\_attack/src/main.rs od 72 do 112]{./ssl_attack/src/main.rs}
 Uzyskano tajną wiadomość ,,Super secret message'' oraz wartość $k = 0$.
 
 \section{Mały wykładnik prywatny}
@@ -862,7 +873,7 @@ e =
 
 Za pomocą tego klucza zaszyfrowano tajną wiadomość. Na podstawie twierdzenia Wienera oraz korzystając z kodu przedstawionego poniżej, wyznaczono klucz prywatny oraz odszyfrowano wiadomość.
 
-\lstinputlisting[firstline=21,lastline=72,caption=./ssl\_attack/src/main.rs od 21 do 72]{./ssl_attack/src/main.rs}
+\lstinputlisting[firstline=19,lastline=70,caption=./ssl\_attack/src/main.rs od 19 do 70]{./ssl_attack/src/main.rs}
 
 Uzyskano tajna wiadomość ,,Other Secret Message'' oraz klucz prywatny o wartości: \\
 
@@ -910,7 +921,7 @@ Dla tego projektu utworzono \textit{makefile}, co pozwala na szybkie kompilowani
 \section{Serwer z WolfSSL}
 Na podstawie artykułu \cite{robot} pobrano wrażliwą wersje biblioteki \textit{WolfSSL}. Jest to wersja 3.11.0. Bibliotekę należało skompilować samodzielnie, żeby móc z niej korzystać. Wykonano tą czynność wpisując poniższe komendy do wiersza poleceń systemu zwracając uwagę, żeby znaleźć się w folderze z kodem źródłowym.
 \begin{lstlisting}
-$ ./cofigure --with-openssl --with-lighttpd CPPFLAGS=DWOLFSSK_STATIC_RSA
+$ ./configure --enable-opensslextra --enable-lighty --enable-webserver C_EXTRA_FLAGS="-DWOLFSSL_STATIC_RSA"
 $ make
 $ make install
 \end{lstlisting}
