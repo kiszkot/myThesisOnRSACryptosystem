@@ -1,0 +1,13 @@
+ssl_attack/target
+
+*.doc
+*.aux
+*.toc
+*.dvi
+*.synctex.gz
+*.log
+*.vscode
+
+WebServer/test.py
+ssl_attack/.git
+ssl_attack/.gitignore

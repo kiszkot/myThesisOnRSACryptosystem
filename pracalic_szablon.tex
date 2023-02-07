@@ -1,0 +1,1026 @@
+\documentclass[12pt,twoside,a4]{mwbk}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% polonizacja
+%\usepackage[polish]{babel} 
+\usepackage[T1]{fontenc} 
+%\usepackage[cp1250]{inputenc}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{listings}
+\lstset{ 
+  language=C,                     % the language of the code
+  basicstyle=\scriptsize\ttfamily, % the size of the fonts that are used for the code
+  numbers=left,                   % where to put the line-numbers
+  numberstyle=\scriptsize\color{Blue},  % the style that is used for the line-numbers
+  stepnumber=1,                   % the step between two line-numbers. If it is 1, each line will be numbered
+  numbersep=5pt,                  % how far the line-numbers are from the code
+  backgroundcolor=\color{white},  % choose the background color. You must add \usepackage{color}
+  showspaces=false,               % show spaces adding particular underscores
+  showstringspaces=false,         % underline spaces within strings
+  showtabs=false,                 % show tabs within strings adding particular underscores
+  frame=single,                   % adds a frame around the code
+  rulecolor=\color{black},        % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. commens (green here))
+  tabsize=2,                      % sets default tabsize to 2 spaces
+  captionpos=b,                   % sets the caption-position to bottom
+  breaklines=true,                % sets automatic line breaking
+  breakatwhitespace=false,        % sets if automatic breaks should only happen at whitespace
+  postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+  keywordstyle=\color{Blue},      % keyword style
+  commentstyle=\color{Green},   % comment style
+  stringstyle=\color{ForestGreen},      % string literal style
+  identifierstyle=\color{Blue}
+}
+\usepackage{seqsplit}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%przerwa mi�dzy liniami
+\linespread{1.3}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% deklaracja sposobu wy�wietlania rozdzia�u
+\DeclareSectioningCommand[breakbefore]{chapter}{1}
+{24pt plus5pt minus2pt}
+{\LARGE\textbf{\ifHeadingNumbered\HeadingNumber.\enspace\fi\HeadingText}}
+{10pt plus3pt}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% zmiana wy�wietlania spis tre�ci
+\usepackage{tocloft}
+\renewcommand\cftchapfont{\normalfont}
+\renewcommand{\cftchapleader}{\cftdotfill{\cftsecdotsep}}
+\renewcommand\cftchappagefont{\normalfont}
+\renewcommand{\cftdotsep}{0.2}
+\renewcommand\cftchapdotsep{\cftdot}
+\setlength{\cftbeforechapskip}{0pt}
+\renewcommand{\chaptername}{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% spos�b wy�wietlania numer�w: wzor�w, rysunk�w, tabel
+\renewcommand{\thetable}{\thechapter.\arabic{table}}  
+\renewcommand{\thefigure}{\thechapter.\arabic{figure}} 
+\renewcommand{\theequation}{\thechapter.\arabic{equation}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% za��czanie grafi
+%% prosz� umieszcza� pliki w katalogu g��wnym dokumentu, 
+%% prosz� pami�ta�, �e logo te� powinno tam by�
+\usepackage{graphicx}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% marginesy
+\usepackage[a4paper,top=2.5cm,foot=2cm,left=3.5cm,right=2.5cm]{geometry}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% pagina �ywa, a w�a�ciwie jej brak
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[RO,LE]{\thepage~}
+\fancyhead{}
+\renewcommand{\headrulewidth}{0pt}%{}
+\setlength{\footskip}{10mm}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% zmiana itemize na kropki
+\usepackage{enumitem}
+\setitemize[1]{label=$\bullet$}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% pakiety ,,matematyczne''  
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Twierdzenia, definicje, i inne
+\newtheorem{twierdzenie}{Twierdzenie}[chapter]
+\theoremstyle{definition}
+\newtheorem{definicja}{Definicja}[chapter]
+\newtheorem{lemat}{Lemat}[chapter]
+\newtheorem{wniosek}{Wniosek}[chapter]
+\newtheorem{przyklad}{Przykład}[chapter]
+\newtheorem{uwaga}{Uwaga}[chapter]
+\newtheorem{propozycje}{Propozycje}[chapter]
+\newtheorem{fakt}{Fakt}[chapter]
+\newenvironment{dowod}[1][Dowód]{\noindent\textbf{#1.} }{\newline\smallskip \hfill \rule{0.5em}{0.5em}}
+\DeclareMathOperator{\NWD}{NWD}
+%\newcommand{\NWD}{\text{NWD}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% brak numeracji strony na pierwszej stronie rozdzia�u
+\usepackage{nopageno}
+
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%strona tytu�owa
+\renewcommand{\maketitle}{
+\begin{titlepage}
+  \begin{center}
+    {\Large \bf POLITECHNIKA POZNAŃSKA}\\
+    \vspace{0.15in}
+    {\large \bf WYDZIAŁ AUTOMATYKI, ROBOTYKI \\I ELEKTROTECHNIKI}\\
+    \vspace{0.15in}
+    {\large \bf Instytut Matematyki}\\
+    \vspace{0.3in}
+    
+    %Logo 
+    \begin{figure}[h]
+    \centering
+    \includegraphics[height=1.5in]{logoPP.jpg}
+    \end{figure}
+
+    \vspace{0.7in}
+%% !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+%% odpowiednie s�owo wykasowa�
+    {\large PRACA DYPLOMOWA INŻYNIERSKA}\\
+    \vspace{0.15in}
+    \textsc{\@title}
+  \end{center}
+
+ \begin{center}
+   \vspace{0.8in}
+   {\LARGE \centering \@author} \par
+ \end{center}
+
+ \begin{flushright}
+    \vspace{1.2in}
+     \hspace{4in}{Promotor:}\\
+%% !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+%% wpisa� nazwisko promotora
+     \hspace{3 in}{dr Anna Iwaszkiewicz-Rudoszańska}\\
+  \end{flushright}
+    \vspace*{\stretch{1}}
+    \begin{center}
+    POZNAŃ, 2023 
+    \end{center}
+\end{titlepage}}
+
+\makeatother
+%% !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+%% wpisa� swoje nazwisko
+\author{Krystian Baran}
+
+%% !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+%% wpisa� tytu�
+\title{{\Large \bf SYSTEM RSA}}
+
+%koniec strony tytu�owej
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% pocz�tek dokumentu
+\begin{document}
+
+\pagestyle{empty}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% pierwsza strona - strona tytu�awa
+\maketitle
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% druga strona - pusta strona
+\newpage
+\mbox{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% trecia strona
+\newpage
+\thispagestyle{empty}
+    \vspace*{1cm}
+   \begin{center} 
+   {\Large \bf KARTA PRACY DYPLOMOWEJ Z DZIEKANATU\\
+   (kserokopia z podpisami)}
+   \end{center}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% czwarta strona - pusta strona
+\newpage
+\mbox{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Podziekowania
+\newpage
+\vspace*{\stretch{1}}
+
+\hspace{7cm}
+\begin{minipage}{7cm}
+{\Large Podziękowania}
+\vspace{5mm}
+
+%% !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+%% chyba zmieni� podzi�kowania ;-)
+
+Składam serdecznie podziękowania
+
+\quad promotorowi,
+
+\qquad komisji egzaminacyjnej,
+
+\hspace{3em} Stack Overflow,
+
+\hspace{4em} TryHackMe,
+
+\hspace{5em} \dots
+
+\hspace{6em} I inni   ... 
+\end{minipage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% pusta strona
+\newpage
+\mbox{ }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% spis tre�ci
+\newpage
+\pagestyle{fancy}
+\tableofcontents
+
+
+%%%%%%%%%%%%%      W S T � P
+
+\chapter*{Wstęp}
+Kryptografia i systemy kryptograficzne miały głównie zastosowanie w wojskach jako bezpieczna metoda komunikacji. Systemy kryptograficzne z kluczem publicznym natomiast pojawiły się dopiero w 1978 gdy Rivest, Shamir i Adleman wynaleźli pierwszy system kryptograficzny z kluczem publicznym. Ten system nazywany jest teraz RSA zostanie on omówiony. Wraz z pojawieniem się nowego systemu pojawiały się problemy implementacji jak i możliwe na niego ataki. Ponieważ jest to system tylko teoretyczne bezpieczny to jest on co raz mniej wykorzystywany. Natomiast ataki na ten system są interesujące ze względu matematycznego jak i implementacji. \\
+
+Praca składa się z czterech rozdziałów. W pierwszym opisane są podstawowe pojęcia matematyczne oraz sam system RSA. Pojęcia jak rozszerzony algorytm Euklidesa lub samo działanie systemu RSA zostały poprzedzone przykładami. W drugim rozdziale jest opisany protokół SSL.TLS. Jest to natomiast temat wymagający osobną pracę, zatem został on opisany na podstawie przykładu, co powinno ułatwić zrozumienie podstawowych działań. Trzeci rozdział dedykowany jest opisem wybranych ataków na system RSA wraz z implementacją w kodzie tych ataków. Tam gdzie pojawia się implementacja w kodzie to został także przedstawiony własny przykład. Ostatni rozdział precyzuje atak z wybranym szyfrogramem Bleichenbachera na podstawie własnego serwera.
+
+
+
+%      P I E R W S Z Y    R O Z D Z I A Ł
+
+\chapter{Podstawy działania systemu RSA}
+System RSA jest przykładem systemu kryptograficznego asymetrycznego z kluczem publicznym i prywatnym. System ten jest bezpieczny teoretycznie. Niebezpieczeństwo związane z użytkowaniem tego systemu polega na jego niewłaściwej implementacji przez użytkowników. \\ \par
+W tym rozdziale zostaną omówione podstawy tego systemu z przykładami.
+
+
+\section{Dzielenie z resztą}
+Niech $a,b,k \in \mathbb{Z}$. Liczba $a$ dzieli liczbę $b$, jeżeli istnieje takie $k$, dla którego $b = k \cdot a$. Oznacza się to jako $a|b$.
+\begin{definicja}{\cite{markowe}}
+Liczby $a,b \in \mathbb{Z}$ przystają do siebie modulo $n \in \mathbb{N}$, jeżeli $n | (a - b)$. Pisze się wtedy $a = b \pmod{n}$.
+\end{definicja}
+Dla $a,b \in \mathbb{Z}$ i $n \in \mathbb{N}$ zapis $a = b \pmod{n}$ jest równoważny zapisowi $a = n \cdot k + b$ dla pewnego $k \in \mathbb{Z}$. \\ \par
+Liczba $b$ może być wtedy resztą z dzielenia $a$ przez $n$. W szczególności $b$ może być liczbą ze zbioru $\{0,1,\ldots,n-1\}$.
+
+
+\section{Rozszerzony algorytm Euklidesa}
+Algorytm Euklidesa pozwala obliczać największy wspólny dzielnik, opierając się na fakcie przedstawionym poniżej.
+
+\begin{fakt}{\cite{handbook}}
+	$\NWD(a,b) = \NWD(b, a \pmod{b})$ dla $a,b \in \mathbb{N}$.
+\end{fakt}
+
+Zapis $\NWD(b, a \pmod{n})$ oznacza $\NWD(b,c)$, gdzie $a = c \pmod{b}$, za $a \pmod{b}$. W algorytmie Euklidesa za $a \pmod{b}$ bierze się resztę z dzielenia $a$ przez $b$.
+
+Obliczając kolejno reszty z dzielenia aż do momentu uzyskania zerowej reszty, otrzymuje się $\NWD(a,b)$. Będzie to ostatnia niezerowa reszta.
+\begin{equation*} \begin{aligned}
+& a = b \cdot q_2 + r_2,  \\
+& b = r_2 \cdot q_3 + r_3, \\
+& r_2 = r_3 \cdot q_4 + r_4, \\
+& \ldots \\
+& r_n = r_{n+1} \cdot q_{n+2} + r_{n+2}, \\
+& \ldots \\
+& r_m = r_{m+1} \cdot q_{m+2} + 0.
+\end{aligned} \end{equation*}
+
+Rozszerzony algorytm Euklidesa oblicza nie tylko największy wspólny dzielnik, ale też współczynniki $x_i$ i $y_i$ równania typu $ax_i + by_i = r_i$. Reszty $r_0$ i $r_1$ uzyskiwane są przez podstawienie do równania powyżej $x_0 = 1$, $y_0 = 0$ dla $r_0$ oraz $x_1 = 0$, $y_1 = 1$ dla $r_2$. Dla ostatniej niezerowej reszty równanie będzie postaci $ax + by = \NWD(a,b)$.
+
+\begin{equation*} \begin{aligned}
+a &= b \cdot q_2 + r_2  \implies r_2 = a \cdot 1 + b \cdot (-q_2), \\
+b &= r_2 \cdot q_3 + r_3 \implies r_3 = b - r_2 q_3 = b - a q_3 + b q_2 q_3 = a \cdot (-q_3) + b \cdot (1 + q_3 q _2), \\
+r_2 &= r_3 \cdot q_4 + r_4 \implies r_4 = r_2 - r_3 q_4 = a - b q_2 - b q_4 (1 + q_2) + a q_3 q_4 = \\
+&= a \cdot (1 + q_4 q_3) + b \cdot (-q_2 - q_4 (1 + q_2)), \\
+& \ldots \\
+r_n &= a \cdot (x_{n-2} - q_n x_{n-1}) + b \cdot (y_{n-2} - q_n y_{n-1}).
+\end{aligned} \end{equation*}
+
+Poniżej zostały zebrane współczynniki w postaci ciągów iteracyjnych:
+
+\[ r_i = \left\{ \begin{array}{lc} r_0 = a \\ r_1 = b \\ r_i = r_{i-2} \pmod{r_{i-1}},& i > 1 \end{array} \right. ,
+\begin{array}{lc} q_i = \lfloor \frac{r_{i-2}}{r_{i-1}} \rfloor ,& i>1 \end{array}, \]
+
+\[
+x_i = \left\{ \begin{array}{lc} x_0 = 1 \\ x_1 = 0 \\ x_i = x_{i-2} - q_{i} \cdot x_{i-1} ,& i > 1 \end{array} \right. ,\text{ }
+y_i = \left\{ \begin{array}{lc} y_0 = 0 \\ y_1 = 1 \\ y_i = y_{i-2} - q_i \cdot y_{i-1} ,& i > 1 \end{array} \right. .
+\]
+
+Obliczenia dobiegają końca, jeżeli $r_k = 0$ dla pewnego $k\in\mathbb{N}$. Wtedy $\NWD(a,b) = r_{k-1}$ oraz $a \cdot x_{k-1} + b \cdot y_{k-1} = r_{k-1}$.
+
+\subsection{Przykład wykorzystania rozszerzonego algorytmu Euklidesa}
+Niech $a = 41$ oraz $b = 12$. Wtedy:
+\begin{center} \begin{tabular}{|c|c|c|c|c|}
+\hline
+$k$ & $r_k$ & $q_k$ & $x_k$ & $y_k$ \\ \hline
+0 & 41 & -- & 1 & 0 \\ \hline
+1 & 12 & -- & 0 & 1 \\ \hline
+2 & 5 & 3 & $1-3\cdot0 = 1$ & $0 -3 \cdot 1 = -3$ \\ \hline
+3 & 2 & 2 & $0 - 2 \cdot 1 = -2$ & $1 - 2 \cdot (-3) = 7$ \\ \hline
+4 & 1 & 2 & $1 - 2 \cdot (-2) = 5$ & $-3 - 2 \cdot 7 = -17$ \\ \hline
+5 & 0 & 2 & $-2 - 2 \cdot 5 = -12$ & $5 - 2 \cdot (-13) = 31$ \\ \hline
+\end{tabular} \end{center}
+Zatem, na podstawie wykonanych obliczeń, $\NWD(41,12) = 1$. \\
+Ponadto $41 \cdot 5 + 12 \cdot (-17) = 1$.
+
+
+\section{Funkcja Eulera}
+Funkcja Eulera jest funkcją, której dziedzina jest zbiór liczb naturalnych. Wartość tej funkcje jest zależna od rozkładu jej argumentu na czynniki pierwsze.
+
+\begin{definicja}{\cite{handbook}}
+	Jeżeli $\NWD(a,b)=1$, gdzie $a,b \in \mathbb{Z}$, to liczby $a$ i $b$ nazywane są względnie pierwsze.
+\end{definicja}
+
+\begin{definicja}{\cite{handbook}}
+Funkcja Eulera oznaczana jako $\varphi(n)$ dla $n \geq 1$ wyznacza liczbę liczb całkowitych względnie pierwszych z $n$ z przedziału $[1,n]$.
+\end{definicja}
+
+Poniżej przedstawiono niektóre własności i wzory dla tej funkcji.
+\begin{fakt}{\cite{handbook}}
+Funkcja Eulera ma następujące własności:
+\begin{enumerate}
+\item Jeżeli $p$ jest liczbą pierwszą, to $\varphi(p) = p-1$.
+\item Funkcja Eulera jest multiplikatywna, to jest $\varphi(mn) = \varphi(m) \varphi(n)$ jeżeli \\
+$\NWD(m,n) = 1$.
+\item Jeżeli $n = p_1^{\alpha_1} p_2^{\alpha_2} \ldots p_k^{\alpha_k}$ jest rozkładem liczby $n$ na iloczyn różnych czynników pierwszych, to
+\[ \varphi(n) = n \left( 1 - \frac{1}{p_1} \right) \left( 1 - \frac{1}{p_2} \right) \ldots \left( 1 - \frac{1}{p_k} \right). \]
+\end{enumerate}
+\end{fakt}
+
+\begin{twierdzenie}[Twierdzenie Eulera]{\cite{fermat}}
+Dla dowolnych $a \in \mathbb{Z}$, $n \in \mathbb{N}$ jeżeli \\
+$\NWD(a,n) = 1$, to $a^{\varphi(n)} = 1 \pmod{n}$.
+\end{twierdzenie}
+
+Niech teraz $p$ będzie liczbą pierwszą. Wtedy zachodzi następująca własność:
+\begin{twierdzenie}[Małe twierdzenie Fermata]{\cite{fermat}}
+Dla dowolnych liczb $a \in \mathbb{Z}$ zachodzi równość $a^p = a \pmod{p}$. Jeżeli dodatkowo $\NWD(a,p) = 1$, to $a^{p-1} = 1 \pmod{p}$.
+\end{twierdzenie}
+
+
+\section{Chińskie twierdzenie o resztach}
+\begin{twierdzenie}{\cite{handbook}}
+Jeżeli liczby $m_1,m_2,m_3,\ldots,m_n \in \mathbb{N}$ są parami względnie pierwsze, to jest $\NWD(m_i,m_j)=1$ dla $i\neq j$, to układ kongruencji
+\[ \left\{ \begin{array}{c}
+x = a_1 \pmod{m_1}, \\
+x = a_2 \pmod{m_2}, \\
+\ldots \\
+x = a_n \pmod{m_n}
+\end{array} \right. \]
+ma rozwiązanie. Rozwiązanie to jest jednoznaczne modulo $\prod_{i=1}^n m_i$.
+\end{twierdzenie}
+Jedna z metod rozwiązywania takiego układu równań polega na podstawieniu rozwiązania typu $x = m_n \cdot k + a_n$ do kolejnych równań, aż do osiągnięcia wyrażenia postaci $x = b \cdot \prod_{i=1}^n m_i + c$. Rozwiązaniem jest wtedy liczba $c$.
+
+
+\section{Algorytm RSA}
+Omówione zostanie teraz wyznaczanie kluczy w systemie RSA oraz szyfrowanie i odszyfrowywanie wiadomości.
+
+\subsection{Wyznaczanie kluczy}
+W pierwszym kroku wybierane są dwie różne liczby pierwsze $p$ i $q$. Obliczany jest ich iloczyn $n = pq$ oraz wartość funkcji Eulera dla $n$:
+\[ \varphi(n) = n \left( 1 - \frac{1}{p} \right) \left( 1 - \frac{1}{q} \right) = pq \left( 1 - \frac{1}{p} \right) \left( 1 - \frac{1}{q} \right) = (p-1)(q-1). \]
+Wybierana jest liczba $e$ względnie pierwsza z $\varphi(n)$. \\ \par
+Następnie obliczana jest odwrotność liczby $e$ modulo $\varphi(n)$, czyli $d$ spełniające nierówność:
+\[ ed = 1 \pmod{\varphi(n)}. \]
+Liczbę tę można wyznaczyć korzystając z rozszerzonego algorytmu Euklidesa dla $e$~i~$\varphi(n)$. 
+Kluczem publicznym systemu RSA będzie para $(n, e)$. Kluczem prywatnym będzie liczba $d$.
+
+\subsection{Szyfrowanie i odszyfrowywanie}
+Dowolny ciąg znaków w komputerach można przetworzyć w liczbę. Zatem niech liczba całkowita $m \in [0, n-1]$ będzie wiadomością, która będzie szyfrowana. Zaszyfrowaną wiadomością jest:
+\[ c = m^e \pmod{n}. \]
+Aby wiadomość odszyfrować, należy podnieść liczbę $c$ do potęgi $d$, czyli klucza prywatnego:
+\[ c^d \pmod{n} = m \pmod{n}. \]
+
+\begin{dowod}[Poprawność odszyfrowywania]
+Niech para $(n,e)$ będzie kluczem publicznym systemu RSA, a $d$ kluczem prywatnym. \\
+Niech $\NWD(m,n) =1$. Ponieważ $ed = 1 \pmod{\varphi(n)}$, to $ed = 1 + \varphi(n) \cdot k$ dla pewnego $k \in \mathbb{Z}$. Ponadto, z twierdzenia Eulera, jeżeli $\NWD(a,n) = 1$, to $a^{\varphi(n)} \pmod{n}$. Wtedy:
+\begin{align*}
+ c^d \pmod{n} &= (m^e)^d \pmod{n} = m^{ed} \pmod{n} = m^{1 + \varphi(n)k} \pmod{n} = \\
+ &= m(m^{\varphi(n)})^k \pmod{n} = m \pmod{n}.
+\end{align*}
+
+Niech teraz $\NWD(m,n) > 1$. Możliwe są trzy przypadki: $\NWD(m,n) = n$, $\NWD(m,n) = p$ lub $\NWD(m,n) = q$. Jeżeli $\NWD(m,n)=n$, to wiadomość $m = 0 \pmod{n}$ oraz szyfrogram $c = 0 \pmod{n}$. Jeżeli $\NWD(m,n) = p$, to:
+\[ \left\{ \begin{array}{ll}
+c^d &= m^{ed}  = m^{k\varphi(n) + 1} \pmod{q} = m^{(p-1)(q-1)k}m \pmod{q}= \\
+&= m \pmod{q}, \\
+c^d &= m^{ed} \pmod{p} = 0 \pmod{p}.
+\end{array} \right. \]
+
+Z drugiego równania wynika, że $c^d = p \cdot r + 0$ dla pewnego $r \in \mathbb{Z}$. Podstawiając do pierwszego równania otrzyma się:
+\[ \begin{array}{c} 
+pr = m \pmod{q}, \\
+r = m \cdot p^{-1} \pmod{q}.
+\end{array} \]
+
+To oznacza, że $r = q \cdot t + mp^{-1}$ dla pewnego $t \in \mathbb{Z}$. Warto zauważyć, że liczba $p^{-1}$ spełnia równanie $pp^{-1} = 1 \pmod{q}$, czyli $pp^{-1} = q \cdot s + 1$ dla pewnego $s \in \mathbb{Z}$. Ponadto, $mq = 0 \pmod{n}$ ponieważ $\NWD(m,n) = p$. Zatem:
+\begin{align*}
+c^d \pmod{n} &= p \cdot r = p (qt + mp^{-1}) \pmod{n} = \\
+&= n \cdot t + m p p^{-1} \pmod{n} = n \cdot t + m (qs + 1) \pmod{n} = \\
+&= nt + mqs + m \pmod{n} = m \pmod{n}.
+\end{align*}
+Analogicznie dla $\NWD(m,n)=q$.
+\end{dowod}
+
+
+\section{Przykład działania systemu RSA}
+Do przykładu wykorzystano kod napisany w języku programowania \textbf{Rust}. Wykorzystano ponadto pakiet \textit{rug 1.18} do liczb o dowolnej dokładności. Pomimo dostępności w tym pakiecie funkcji do rozszerzonego algorytmu Euklidesa, napisano własną implementacje, nie tylko dla liczb tego pakietu, ale też dla liczb dostępnych pierwotnie. \\ \par
+Niech $p = 7919$ oraz $q = 6841$. Wtedy $n = 54173879$ oraz $\varphi(n) = 54159120$. Korzystając z funkcji losującej dostępnej w powyższym pakiecie, generowano losowe wartości $1 < e < \varphi(n)$ aż do otrzymania liczby względnie pierwszej z $\varphi(n)$. Wylosowano wartość $e = 43003183$. Ponieważ rozszerzony algorytm Euklidesa zwraca także szukane $d$, to dostano także klucz prywatny. Ustalono zatem:
+\begin{itemize}
+\item $(54173879, 43003183)$ -- klucz publiczny,
+\item $7494847$ -- klucz prywatny.
+\end{itemize}
+
+Aby zaszyfrować wiadomość Hi! należy ją przekształcić na liczbę. Konwersja polega na przedstawieniu każdej litery jako liczby z tablicy ASCII i zestawienie do listy. Każda litera jest więc liczbą 8-bitową, czyli liczbą od 0 do 255. Liczby w liście są cyframi liczby w bazie 256. Na podstawie tych cyfr tworzona jest liczba dziesiętna. Zatem $\text{Hi!} = 4745505$. \\ \par
+Korzystając z algorytmu wcześniej przedstawionego, tworzony jest szyfrogram $c = 1052000 = [16,13,96]$. Nie przedstawiono go w postaci tekstu, ponieważ znaki od 0 do 31 nie są tekstem, lecz są przeznaczone do operacji jak tabulacja, przesunięcie kursora do początku linii lub sygnalizowanie końca tekstu.  \\ \par
+Odszyfrowanie wykonywane jest jak wcześniej przedstawiono. Wynik jest liczbą dziesiętną. Żeby dostać z tego tekst, liczbę przedstawiono jako poszczególne cyfry w~bazie 256 w posortowaniu ,,Most Significat Digit first''. Taką tablicę można przekonwertować na znaki, co jest odszyfrowaną wiadomością:
+\[ 4745505 = \text{Hi!} \]
+
+Poniżej przedstawiono kod wykorzystany do przykładu.
+\lstinputlisting[language=C,firstline=85,lastline=133,caption={./ssl\_attack/src/main.rs, od 85 do 133}]{./ssl_attack/src/main.rs}
+
+
+\section{Wybrane testy pierwszości}
+Testy pierwszości służą do sprawdzenia, czy dana liczba jest liczbą pierwszą. Dla małych liczb można kolejno dzielić liczbę przez wszystkie liczby od niej mniejsze i~sprawdzić, czy jest pierwsza. Dla dużych liczb natomiast taka metoda jest za wolna. Liczby pierwsze szczególnej postaci jak liczby pierwsze Mersenna lub liczby pierwsze Fermata mają wzór jawny, zatem łatwiej sprawdzić pierwszość takiej liczby. Natomiast, dla większości liczb, stosuje się testy probabilistyczne. Testy probabilistyczne wskazują, czy dana liczba jest pierwsza z ustalonym prawdopodobieństwem. Zatem pewność, że dana liczba jest pierwsza uzyskuje się na podstawie wielu prób. Dwa takie testy zostały poniżej omówione.
+ 
+\subsection{Probabilistyczny test Fermata {\cite{handbook}}}
+Test Fermata jest testem probabilistycznym opierający się na twierdzeniu Fermata. Dla nieparzystej liczby $n$ wybierana jest liczba $a$ spełniająca nierówność $1 \leq a \leq n-1$. Wtedy:
+\begin{itemize}
+\item Jeżeli $a^{n-1} \neq 1 \pmod{n}$, to liczba $n$ jest na pewno liczbą złożoną.
+\item Jeżeli $a^{n-1} = 1 \pmod{n}$, to liczba $n$ jest liczbą pseudopierwszą, czyli może być liczbą pierwszą.
+\end{itemize}
+Pseudopierwszość wynika z tego, że twierdzenie Fermata nie jest równoważnością. Oznacza to, że ze spełnienia jego tezy nie wynika pierwszość liczby. \\ \par
+Istnieją takie liczby, dla których kongruencja $a^{n-1} = 1 \pmod{n}$ zachodzi dla każdego $a \in \mathbb{Z}$, $\NWD(a,n)=1$. Takie liczby nazywane są liczbami Carmichaela. Dla wybranej liczby złożonej $n$, która nie jest liczbą Carmichaela, przynajmniej połowa liczb $a \in [0, n-1]$ nie spełnia warunku $a^{n-1} = 1 \pmod{n}$. Zatem prawdopodobieństwo poprawnego rozstrzygnięcia pierwszości dla liczb, które nie są liczbami Carmichaela, przy jednokrotnym zastosowaniu testu wynosi co najmniej $\frac{1}{2}$. Problem z liczbami Carmichaela jest rozwiązany w teście Millera-Rabina.
+
+\subsubsection{Przykład}
+Niech liczba $n = 47$ będzie liczbą o nieznanej pierwszości. Wybrana została liczba $a = 3$. Dla tej liczby kongruencja testowa jest postaci:
+\[ a^{n-1} = 3^{46} \pmod {47} = 1 \pmod{47}. \]
+Oznacza to, że liczba może być pierwsza. Wybrana została teraz liczba $a = 4$. Dla tej liczby kongruencja testowa jest postaci:
+\[ 4^{46} \pmod{47} = 1 \pmod{47}. \]
+Ponownie, liczba $n$ może być pierwsza. Wybrana została teraz liczba $a = 5$. Dla tej liczby kongruencja testowa jest postaci:
+\[ 5^{46} \pmod{47} = 1 \pmod{47}. \]
+Ponieważ przez trzeci raz uzyskano tą samą odpowiedź, to można stwierdzić, że liczba $n = 47$ jest liczbą pierwszą, z prawdopodobieństwem co najmniej $1 - \left( \frac{1}{2} \right)^3$.
+
+\subsection{Probabilistyczny test Millera-Rabina}
+Test Millera-Rabina jest znany też jako mocny test pierwszości. Test ten oparty jest na następującym fakcie:
+\begin{fakt}{{\cite{markowe}}}
+Niech $n$ będzie nieparzystą liczbą pierwszą oraz $n-1 = 2^sr$, gdzie $r$~jest nieparzyste. Niech ponadto $a$ będzie liczbą całkowitą taką, że $\NWD(a,n)=1$. Wtedy albo $a^r = 1 \pmod{n}$ albo $a^{2^jr} = -1 \pmod{n}$ dla pewnego $j$, $0 \leq j \leq s-1$.
+\end{fakt}
+Zatem, aby sprawdzić pierwszość liczby $n$, należy rozłożyć liczbę $n-1 = 2^sr$. Wtedy:
+\begin{itemize}
+\item Jeżeli $a^r \neq 1 \pmod{n}$ oraz $a^{2^jr} \neq -1 \pmod{n}$ dla każdego $j, 0\leq j \leq s-1$, to $n$ jest liczbą złożoną.
+\item Jeżeli $a^r = 1 \pmod{n}$ lub $a^{2^jr} = - 1 \pmod{n}$ dla pewnego $j, 0\leq j \leq s-1$, to $n$ może być liczbą pierwszą.
+\end{itemize}
+Tak jak w poprzednim teście pierwszości należy sprawdzić więcej liczb $a$ aby stwierdzić, czy dana liczba jest z dużym prawdopodobieństwem pierwsza. Prawdopodobieństwo, że liczba złożona $n$ będzie uznawana jako pierwsza w tym teście wynosi co najwyżej $\frac{1}{4}$. Jeżeli natomiast dla liczby $n$ przeprowadzimy przynajmniej 30 niezależnych testów, to prawdopodobieństwo poprawnego sprawdzenia liczby wynosi co najmniej $1 - \left( \frac{1}{4}\right)^{30} \approx 0.9999999999$.
+
+\subsubsection{Przykład}
+Niech $n = 57$ będzie liczbą, której pierwszość zostanie sprawdzona. ~Wtedy $n-1= 56 = 2^3 \cdot 7$. Dobrana została na początku liczba $a = 3$. Uzyskujemy wtedy kongruencje:
+\[ \begin{array}{c}
+3^{7} = 21 \pmod{57} \neq 1 \pmod{57}, \\
+3^{2 \cdot 7} = 42 \pmod{57} \neq -1 \pmod{57}, \\
+3^{2^2 \cdot 7} = 54 \pmod{57} \neq -1 \pmod{57}, \\
+3^{2^3 \cdot 7} = 9 \pmod{57} \neq -1 \pmod{57}.
+\end{array} \]
+Na podstawie testu Millera-Rabina, liczba $57$ jest liczbą złożoną.
+
+
+
+% C H A P T E R    2
+
+\chapter{Podstawy działania protokołu SSL}
+W tym rozdziale zostanie wzięty pod uwagę protokół SSL/TLS i niektóre jego aspekty. Zostanie przedstawiony przykład oraz zostaną omówione niektóre różnice pomiędzy wersjami. W celu rozróżniania liczb postaci dziesiętnej od bajtów w postaci szesnastkowej, tę ostatnie będą wyprzedzane przez znak ,,0x''.
+
+
+\section{Czym jest SSL/TLS}
+Nazwa protokołu SSL pochodzi z angielskiego, co oznacza ,,Secure Socket Layer''. Jest to zatem warstwa, która znajduje się, w modelu OSI (ang. Open System Interconnection model), pomiędzy warstwą aplikacji i warstwą połączenia. Nazywana jest warstwą prezentacji. Protokół TLS jest podobny w działaniu do protokół SSL ponieważ jest jego rozwinięciem. Bierze nazwę z angielskiego ``Transport Layer Security''. \\ \par
+
+Ponieważ nie jest to protokół transferu danych, to jedna z jego zalet jest taka, że można go stosować nad istniejącym już protokołem transferu danych takim jak TCP/IP. TLS stosowany jest na co dzień przy wyświetlaniu witryn internetowych (HTTPS), wysyłaniu elektronicznych wiadomości (SMTPS) i innych przypadkach.  \\ \par
+
+Protokół SSL/TLS zawiera podprotokoły odpowiedzialne za pierwsze połączenie, alerty oraz dane. Te podprotokoły będą w dalszym ciągu nazywane protokołami. Każdy podprotokół ma własne bloki danych, które są wysyłane przez warstwę połączenia. Ta warstwa wysyła dane w postaci pakietów składających z bloków o~długości jednego bajta. Te bajty podlegają konkatenacji i są uporządkowane w taki sposób, że pierwsze pojawiające się bloki przyporządkowane są do większych wartości. Uporządkowanie to znane jest z angielskiego jako ``big endian''. \\ \par
+
+Ze względu na to, że wersja TLS 1.3 nie wspiera systemu RSA, to nie zostanie ona omówiona.
+
+\section{SSL Handshake \cite{ssl}}
+Uzyskanie połączenia protokołem SSL/TLS odbywa się za pomocą procesu znanego jako \textit{SSL Handshake}. Jest to także podprotokół protokołu SSL, który zawiera podprotokoły. Proces połączenia odbywa się poprzez wymianę pakietów między klientem i serwerem. Przechwycono taką wymianę danych pomiędzy własnym serwerem i klientem. Dane te zostaną wykorzystane do dalszego wyjaśnienia.
+
+\subsection{ClientHello}
+Po połączeniu TCP wysyłana jest przez klienta seria danych, którą nazywa się \textit{ClientHello}. Poniżej została taka seria danych zaprezentowana. Można w niej rozróżnić pięć kolumn. Pierwsza jest pomocniczą kolumną zliczająca, w bazie szesnastkowej, liczbę wcześniejszych bajtów. Dwie kolejne kolumny są danymi w postaci szesnastkowej rozdzielone co bajt. Ostatnie dwie kolumny to odpowiedniki wcześniejszych dwóch kolumn z tabeli znaków ASCII.
+
+\begin{lstlisting}[keywordstyle=\color{Black},
+  commentstyle=\color{Black},
+  stringstyle=\color{Black},
+  identifierstyle=\color{Black}]
+00000000  16 03 03 00 95 01 00 00  91 03 03 af ee 89 13 29   ........ .......)
+00000010  8a ff 3d 94 8a 78 a8 71  24 0b 7a d4 f9 78 2d 13   ..=..x.q $.z..x-.
+00000020  e8 e6 84 a7 e1 7c 20 b6  ea b8 11 00 00 3c c0 2c   .....| . .....<.,
+00000030  c0 2b c0 30 c0 2f 00 9f  00 9e 00 9d 00 9c cc a9   .+.0./.. ........
+00000040  cc a8 cc aa c0 27 c0 23  c0 28 c0 24 c0 0a c0 09   .....'.# .(.$....
+00000050  c0 14 c0 13 00 6b 00 67  00 39 00 33 00 3d 00 3c   .....k.g .9.3.=.<
+00000060  00 35 00 2f cc 14 cc 13  cc 15 01 00 00 2c 00 0a   .5./.... .....,..
+00000070  00 0e 00 0c 00 10 00 13  00 15 00 17 00 18 00 19   ........ ........
+00000080  00 0d 00 12 00 10 06 03  05 03 04 03 02 03 06 01   ........ ........
+00000090  05 01 04 01 02 01 00 17  00 00                     ........ ..
+\end{lstlisting}
+
+Pierwszy bajt 0x16 sygnalizuje protokół SSL handshake. Drugi i trzeci bajt 0x0303 oznaczają maksymalną wersję SSL/TLS, która jest obsługiwana przez klienta. 0x0300 odpowiada za SSL 3, 0x0301 za TLS v1.0, 0x0302 za TLS v1.1 a 0x0303 za TLS v1.2. W tym przypadku jest to TLS v1.2. Kolejne dwa bajty 0x0095 wyznaczają pozostała długość wiadomości. W tym przypadku jest to  149 bajtów. \\ \par
+
+Kolejny bajt 0x01 sygnalizuje początek wiadomości \textit{ClientHello}. Następne trzy bajty wyznaczają, jak poprzednio, pozostałą długość wiadomości (0x000091 czyli 145 bajtów). Kolejne dwa bajty są powtórzeniem maksymalnej wersji obsługiwanego protokołu SSL/TLS. \\ \par
+
+W 32 bajtach, czyli od 0xAF do 0x11, znajduje się odcisk czasowy oraz losowa wartość, która będzie wykorzystana do obliczenia klucza połączenia. Kolejna wartość to długość bajtów identyfikatora sesji. W tym przypadku jest to 0x00 czyli 0, zatem nie jest wznawiana żadna sesja. W przypadku wartości większej od zera, po tym bajcie znalazłyby się bajty odpowiadające identyfikatorowi połączenia, który serwer wyznacza. \\ \par
+
+Kolejne dwa bajty, 0x003C czyli 60, wyznaczają długość obsługiwanych przez klienta szyfrogramów. Są to bajty od 0xC0 do 0x15. Dla każdego szyfrogramu przeznaczone są trzy bajty -- pierwsze dwa identyfikują specyfikacje szyfru, a trzeci funkcję skrótu. Serwer wybierze jeden z tych szyfrów do wymiany klucza. \\ \par
+
+Pozostałe dane przeznaczone są dla dodatków. Dodatki zostały zaimplementowane od wersji TLS v1.2. Ponieważ te dane są doliczane do długości pojawiającej się na początku bloku, to ich dodanie nie wpływa na połączenie ze starszymi wersjami. \\ \par
+Dodatki nie zostaną omówione.
+
+
+\subsection{ServerHello}
+Kolejnym zestawem danych nazywany jest \textit{ServerHello}. Są to dane wysyłane przez serwera do klienta, zawierające informacje takie jak certyfikaty, wybrany szyfr, identyfikator połączenia i inne. Poniżej zostały takie dane przedstawione.
+
+\begin{lstlisting}[keywordstyle=\color{Black},
+  commentstyle=\color{Black},
+  stringstyle=\color{Black},
+  identifierstyle=\color{Black}]
+    00000000  16 03 03 00 50 02 00 00  4c 03 03 8f 0d a3 23 8e   ....P... L.....#.
+    00000010  67 ea c1 b3 74 23 45 1b  35 a1 4a 93 e7 8a 67 a2   g...t#E. 5.J...g.
+    00000020  af 40 ca b1 ab 16 5f 77  83 f0 e1 20 bc 3e 34 8b   .@...._w ... .>4.
+    00000030  3c 65 81 6e 8f ba 77 3f  36 a1 ea 05 a3 dc 76 5a   <e.n..w? 6.....vZ
+    00000040  c7 23 66 0a dc e6 6c b0  24 64 22 50 00 3c 00 00   .#f...l. $d"P.<..
+    00000050  04 00 17 00 00                                     .....
+    00000055  16 03 03 03 82 0b 00 03  7e 00 03 7b 00 03 78 30   ........ ~..{..x0
+    00000065  82 03 74 30 82 02 5c a0  03 02 01 02 02 14 6e 72   ..t0..\. ......nr
+    00000075  3d 3f f5 1d 1d cb 99 cd  48 ae fa 89 46 c3 a5 30   =?...... H...F..0
+    00000085  03 c1 30 0d 06 09 2a 86  48 86 f7 0d 01 01 0b 05   ..0...*. H.......
+    00000095  00 30 45 31 0b 30 09 06  03 55 04 06 13 02 50 4c   .0E1.0.. .U....PL
+    000000A5  31 13 30 11 06 03 55 04  08 0c 0a 53 6f 6d 65 2d   1.0...U. ...Some-
+    000000B5  53 74 61 74 65 31 21 30  1f 06 03 55 04 0a 0c 18   State1!0 ...U....
+    000000C5  49 6e 74 65 72 6e 65 74  20 57 69 64 67 69 74 73   Internet  Widgits
+    000000D5  20 50 74 79 20 4c 74 64  30 1e 17 0d 32 32 31 31    Pty Ltd 0...2211
+    000000E5  31 36 31 31 32 34 31 34  5a 17 0d 32 33 31 31 31   16112414 Z..23111
+    000000F5  36 31 31 32 34 31 34 5a  30 41 31 0b 30 09 06 03   6112414Z 0A1.0...
+    00000105  55 04 06 13 02 45 55 31  0f 30 0d 06 03 55 04 08   U....EU1 .0...U..
+    00000115  0c 06 42 61 6e 61 6e 61  31 21 30 1f 06 03 55 04   ..Banana 1!0...U.
+    00000125  0a 0c 18 49 6e 74 65 72  6e 65 74 20 57 69 64 67   ...Inter net Widg
+    00000135  69 74 73 20 50 74 79 20  4c 74 64 30 82 01 22 30   its Pty  Ltd0.."0
+    00000145  0d 06 09 2a 86 48 86 f7  0d 01 01 01 05 00 03 82   ...*.H.. ........
+    00000155  01 0f 00 30 82 01 0a 02  82 01 01 00 de 70 35 26   ...0.... .....p5&
+    00000165  8d 1c ae c8 7a 29 4f ca  a1 ef a0 bd 8d 7a 24 85   ....z)O. .....z$.
+    00000175  48 b1 24 16 a6 38 19 c4  8e 08 20 03 bc 92 83 ed   H.$..8.. .. .....
+    00000185  51 38 15 c9 36 b7 b0 e5  1d a0 96 3c 95 a7 4c 3e   Q8..6... ...<..L>
+    00000195  79 a8 ea f5 d5 15 da 87  d7 b4 6a 03 eb 49 05 24   y....... ..j..I.$
+    000001A5  46 5a 5e ae 89 7e 35 82  4c 9b a3 65 8f cd db 6a   FZ^..~5. L..e...j
+    000001B5  99 5a b6 95 92 fa c7 1d  7c ec 77 1d 5c 33 8c 7b   .Z...... |.w.\3.{
+    000001C5  80 f4 1d 8a 90 81 61 94  49 ed 81 e6 e9 7c e4 f1   ......a. I....|..
+    000001D5  4c c5 11 02 49 22 0e e4  90 5e 07 f9 9c 9d 14 27   L...I".. .^.....'
+    000001E5  06 0b fb 4c c4 ee 06 18  ea 94 90 ce 43 79 51 47   ...L.... ....CyQG
+    000001F5  18 ba 62 57 3a 4c af 46  52 f9 4e 07 d8 40 3e 74   ..bW:L.F R.N..@>t
+    00000205  2c 89 36 dd 4a 1a fe aa  83 e9 c1 04 ab 69 41 16   ,.6.J... .....iA.
+    00000215  9b 61 55 57 41 6c 78 fe  58 95 2d 22 88 9c fc 26   .aUWAlx. X.-"...&
+    00000225  a8 c3 6a b7 29 16 8a f0  de 5e d4 30 93 13 2e 0b   ..j.)... .^.0....
+    00000235  15 29 c7 31 e0 f0 18 b9  08 d9 2e d9 b5 3d 77 32   .).1.... .....=w2
+    00000245  15 f5 07 0f fd 8b ff 92  58 77 37 56 50 4f e8 2a   ........ Xw7VPO.*
+    00000255  e5 07 06 51 30 54 ec 03  fc 5f 52 8d 02 03 01 00   ...Q0T.. ._R.....
+    00000265  01 a3 60 30 5e 30 1f 06  03 55 1d 23 04 18 30 16   ..`0^0.. .U.#..0.
+    00000275  80 14 9a f9 2d 36 1c 2b  11 27 3f 1a b3 1c c0 f3   ....-6.+ .'?.....
+    00000285  5d e4 11 e3 d7 ff 30 09  06 03 55 1d 13 04 02 30   ].....0. ..U....0
+    00000295  00 30 11 06 03 55 1d 11  04 0a 30 08 82 06 64 6f   .0...U.. ..0...do
+    000002A5  6d 61 69 6e 30 1d 06 03  55 1d 0e 04 16 04 14 21   main0... U......!
+    000002B5  c9 fa 0e b8 e6 55 51 73  f1 a9 6e 6d fc 87 8f 2f   .....UQs ..nm.../
+    000002C5  cd 3a 04 30 0d 06 09 2a  86 48 86 f7 0d 01 01 0b   .:.0...* .H......
+    000002D5  05 00 03 82 01 01 00 1c  18 8f cd ec ae 41 2e 99   ........ .....A..
+    000002E5  cb 23 36 a9 f8 10 7b c1  c5 2d 22 7c a6 d9 c2 a4   .#6...{. .-"|....
+    000002F5  a5 0c d7 03 82 6c 64 fa  87 74 f9 e5 f7 ff 6a 06   .....ld. .t....j.
+    00000305  56 d8 a3 7b e2 03 dd 30  ab ca b5 01 5b 1e 39 5c   V..{...0 ....[.9\
+    00000315  f3 0e 25 d2 cf 2f 4b 0a  64 18 0b 8a ed bd 1f c7   ..%../K. d.......
+    00000325  f1 0a 63 98 7a aa 13 d7  09 d4 8f b7 7e 62 af c9   ..c.z... ....~b..
+    00000335  64 81 3e 2d 61 5b 37 1d  30 ba 2d de 98 2d e0 fc   d.>-a[7. 0.-..-..
+    00000345  44 10 4e dc 45 7a 62 e2  90 31 0c e6 b9 d5 99 2a   D.N.Ezb. .1.....*
+    00000355  47 e0 10 e2 0a 5e 1f 36  14 28 d9 e5 da 6b f2 35   G....^.6 .(...k.5
+    00000365  7d 09 02 44 c8 4d 59 d0  4f 4a 65 35 f8 60 6d 94   }..D.MY. OJe5.`m.
+    00000375  bd f8 f2 63 12 36 a1 9b  02 d5 bf ef 86 fe 24 37   ...c.6.. ......$7
+    00000385  59 d0 12 d1 b1 f5 bf 42  18 b5 e8 18 6c 26 a3 bc   Y......B ....l&..
+    00000395  82 5d 1c 29 b7 26 fd ed  8b dd ca 82 82 da de af   .].).&.. ........
+    000003A5  37 ab d8 02 47 04 2d 0a  d7 d3 f8 77 46 79 3d 8f   7...G.-. ...wFy=.
+    000003B5  3b 7c 01 f6 82 ca 99 87  f5 cb 65 ea 4c d9 4a 2f   ;|...... ..e.L.J/
+    000003C5  8d 53 88 65 68 57 74 13  ee 4d 90 24 bc 99 19 e6   .S.ehWt. .M.$....
+    000003D5  b4 1b 10 e2 8b 18 59                               ......Y
+    000003DC  16 03 03 00 04 0e 00 00  00                        ........ .
+\end{lstlisting}
+
+W tych danych można wyróżnić trzy bloki.
+
+\subsubsection{Blok pierwszy - ServerHello}
+Pierwsze 5 bajtów służy, jak poprzednio, do wyznaczenia wersji połączenia i~długości pozostałej wiadomości. \\ \par
+
+Kolejny bajt 0x02 identyfikuje początek bloku zwanego \textit{ServerHello}. Następne trzy bajty 0x00004c są ponownie długością pozostałej wiadomości, a za nimi znajduje się wersja SSL/TLS (0x0303). Jak poprzednio 32 bajty przeznaczone są dla losowej wartości wybranej przez serwera (bajt od 0x8F do 0xE1). \\ \par
+
+Pojawiają się teraz dane dotyczące identyfikatora połączenia. Długość tego identyfikatora to 0x20, czyli 32 bajty. Dane zawierające identyfikator są od 0xBC do 0x50. Trzy kolejne bajty wyznaczają wybrane szyfrowanie, gdzie pierwsze dwa to identyfikator szyfrogramu, a ostatni bajt to funkcja skrótu. W tym przypadku 0x003C odpowiada za TLS\_RSA\_WITH\_AES\_128\_CBC\_SHA256, a 0x00 odpowiada za funkcję skrótu NULL, czyli brak zastosowania funkcji skrótu. \\ \par
+
+Pozostałe bajty tego bloku przeznaczone są dla dodatków.
+
+\subsubsection{Blok drugi - Certyfikat}
+Drugi blok zawiera dane dotyczące certfykifatu serwera. Pierwsze 5 bajtów jest jak poprzednio. Następny bajt 0x0B identyfikuje protokół TLS Handshake, w szczególności wymiana certyfikatu. Trzy kolejne bajty wyznaczają długość certyfikatu, a~następne trzy długość łańcucha certyfikatów. Muszą się różnić o trzy bajty. W tym przypadku 0x00037E i 0x00037B różnią się o 3 bajty. \\ \par
+
+Pozostałe dane są certyfikatem serwera.
+
+\subsubsection{Blok trzeci - ServerHelloDone}
+Ostatni blok, najkrótszy, służy do powiadomienia klienta, że dane dobiegły końca. Serwer w dalszym ciągu będzie oczekiwał na dane od klienta w celu dokończenia połączenia SSL/TLS. Pierwsze 5 bajtów są jak poprzednio. 0x0E wyznacza początek bloku \textit{ServerHelloDone}, a następne trzy bajty wyznaczają długość pozostałych bajtów. Długość 0x000000 jest zerowa, zatem nie ma dalszych danych.
+
+\subsection{Client key exchange}
+Po otrzymaniu od serwera danych wcześniej przedstawionych, klient oblicza i~wysyła dane poniżej przedstawione.
+
+\begin{lstlisting}[keywordstyle=\color{Black},
+  commentstyle=\color{Black},
+  stringstyle=\color{Black},
+  identifierstyle=\color{Black}]
+0000009A  16 03 03 01 06 10 00 01  02 01 00 49 2d ab 7c 1f   ........ ...I-.|.
+000000AA  1d 33 db d1 d6 db e7 57  c8 ec 47 31 f4 3c bf 43   .3.....W ..G1.<.C
+000000BA  94 16 85 6d b2 65 97 07  59 e7 d8 43 9f 8e 46 cc   ...m.e.. Y..C..F.
+000000CA  a1 8b c7 28 df e0 67 93  03 d2 66 c1 44 ea 05 e4   ...(..g. ..f.D...
+000000DA  51 2c 6f 23 42 d6 09 e4  36 37 6a 72 8d cd a7 6f   Q,o#B... 67jr...o
+000000EA  4a 75 01 c2 ef 8b 45 a8  39 e9 3a 5a 07 6b 29 35   Ju....E. 9.:Z.k)5
+000000FA  3d 4d 9e 15 59 06 6c d4  61 21 8c c1 8e e2 89 7d   =M..Y.l. a!.....}
+0000010A  b9 e7 f7 d6 66 9b 66 54  2f 4a 2d d0 9c ac f1 99   ....f.fT /J-.....
+0000011A  4f 49 67 61 01 0d 5f a2  83 3a 9c 27 2f 64 74 6a   OIga.._. .:.'/dtj
+0000012A  24 c4 b8 a9 9c e2 a3 df  b8 68 9f 23 9b 73 6e 6a   $....... .h.#.snj
+0000013A  fa 2a a6 d0 a4 94 3c 94  25 f8 19 f4 87 4d 5f be   .*....<. %....M_.
+0000014A  0c 97 a0 33 e3 1e dc d9  5b 46 c4 b1 88 37 22 14   ...3.... [F...7".
+0000015A  80 07 22 4c a8 c8 da d7  4f 48 06 48 d4 d5 3e 8a   .."L.... OH.H..>.
+0000016A  73 74 aa cd 55 b2 64 bc  77 73 40 7b 96 6e 2a 72   st..U.d. ws@{.n*r
+0000017A  e7 39 4e 54 f2 5b b7 cc  eb c5 73 36 cc d0 66 e1   .9NT.[.. ..s6..f.
+0000018A  35 38 2e cb 50 29 38 f5  35 a5 1f f0 74 95 5a 64   58..P)8. 5...t.Zd
+0000019A  4a 1f b6 88 d1 6d c5 0c  6a da a7                  J....m.. j..
+\end{lstlisting}
+
+Pierwsze 5 bajtów jest jak poprzednio. Następnie bajt 0x10 wyznacza protokół SSL/TLS w szczególności wymiana klucza klienta. Trzy bajty za tym (0x000102) są długością pozostałej wiadomości. Bajty po tej długości są nazywane \textit{PreMasterSecret} i zawierają informacje na temat klucza do komunikacji. Te dane są szyfrowane kluczem publicznym serwera, który został doręczony poprzez \textit{ServerHello}. Ponadto, te dane są formatowane według PKCS \#1. To formatowanie zostanie omówione w~kolejnych rozdziałach.
+
+\subsection{Change cipher spec}
+Klient dodatkowo wysyła blok danych, który został nazwany \textit{ChangeCipherSpec}. Te dane są szyfrowane kluczem, który będzie wykorzystywany do dalszej komunikacji. Poniżej został ten blok przedstawiony.
+\begin{lstlisting}[keywordstyle=\color{Black},
+  commentstyle=\color{Black},
+  stringstyle=\color{Black},
+  identifierstyle=\color{Black}]
+000001A5  14 03 03 00 01 01 16 03  03 00 50 71 19 32 c5 1a   ........ ..Pq.2..
+000001B5  40 95 74 87 84 5b e1 04  19 df 30 61 07 57 cb 33   @.t..[.. ..0a.W.3
+000001C5  b3 b4 02 01 8b 68 f8 c0  1a ac 1c aa b6 07 a5 58   .....h.. .......X
+000001D5  be e1 66 2b 0a 75 af 65  17 98 bc 2d 6e 0e b7 32   ..f+.u.e ...-n..2
+000001E5  9e bb 2d 0c d1 d9 a9 f5  48 69 88 ed 3e 18 b1 c6   ..-..... Hi..>...
+000001F5  d9 0d 0e 13 0d 59 b5 20  be a7 3c                  .....Y.  ..<
+\end{lstlisting}
+
+Pierwsze sześć bajtów dedykowane są protokołowi zmiany szyfrogramu. Bajt 0x14 jest identyfikatorem tego protokołu. Kolejne dwa bajty są wersją SSL/TLS, a~dwa następne są długością wiadomości. Jest to 0x0001 czyli wiadomość o długości jednego bajta. Ten bajt to 0x01. \\ \par
+
+Pierwsze pięć bajtów jest jak w poprzednich przypadkach. Kolejne dane są zaszyfrowaną wiadomością. Składają się z konkatenacji dwóch funkcji skrótu, MD5 i~SHA-1. Skrót obliczany jest na postawie wiadomości dotychczas wysłanych, odebranych i innych wartości. Protokół jest przez to wytrzymały na atak z pośrednikiem (ang. man-in-the-middle), ponieważ skracane dane są posiadanie przez serwera i~klienta osobno. W protokole SSL v3 natomiast wysyłane były skróty MD5 i SHA-1 wiadomości oraz blok weryfikacyjny. \\ \par
+
+Serwer, po otrzymaniu tego bloku danych, wysyła także \textit{ChangeCipherSpec} formatowany w podobny sposób. Dane te zostały poniżej przedstawione.
+\begin{lstlisting}[keywordstyle=\color{Black},
+  commentstyle=\color{Black},
+  stringstyle=\color{Black},
+  identifierstyle=\color{Black}]
+    000003E5  14 03 03 00 01 01                                  ......
+    000003EB  16 03 03 00 50 17 58 86  dd f0 a1 fe 06 a5 f8 34   ....P.X. .......4
+    000003FB  88 9a b2 25 16 bc 17 3b  96 05 44 0e c0 53 8a 3a   ...%...; ..D..S.:
+    0000040B  07 b9 d9 e2 45 fb 72 e0  89 95 db b3 3d 42 ce 64   ....E.r. ....=B.d
+    0000041B  81 fe 65 87 82 2c 75 02  b6 c4 ba ca 52 d3 10 6d   ..e..,u. ....R..m
+    0000042B  08 ae 6a fa 32 18 e6 23  df b6 70 9f 31 51 cc 05   ..j.2..# ..p.1Q..
+    0000043B  f7 86 43 ea be 
+\end{lstlisting}
+
+Szyfrowane dane są sprawdzanie przez klienta i serwera aby potwierdzić poprawną wymianę klucza.
+
+\section{Dane aplikacji}
+Jeżeli serwer i klient przejdą przez kroki wcześniej omówione bez żadnego problemu, to wysyłane wiadomości będą szyfrowane ustalonym kluczem. Poniżej takie dane zostały przedstawione.
+
+\begin{lstlisting}[keywordstyle=\color{Black},
+  commentstyle=\color{Black},
+  stringstyle=\color{Black},
+  identifierstyle=\color{Black}]
+00000200  17 03 03 00 40 1c 1e 03  69 63 ec 92 f7 c1 c6 55   ....@... ic.....U
+00000210  fc 66 7b 96 1c 13 74 8d  65 e7 36 16 f6 c0 04 cc   .f{...t. e.6.....
+00000220  1f fb b5 97 5d a1 ae a8  84 92 6e 6a e8 3c e0 67   ....]... ..nj.<.g
+00000230  10 b8 3d c8 eb 69 a8 67  0a e2 ff 95 db a3 5e 7a   ..=..i.g ......^z
+00000240  c8 53 92 18 65                                     .S..e
+    00000440  17 03 03 00 40 15 c8 1b  0b 99 72 cc 7d a6 29 09   ....@... ..r.}.).
+    00000450  af af 3c 8e 40 28 33 1d  3e be 14 65 64 d7 c5 37   ..<.@(3. >..ed..7
+    00000460  9c e3 80 34 08 10 f3 f2  ee a2 2b f4 ec 1e 68 d8   ...4.... ..+...h.
+    00000470  49 ec 70 e6 ce 53 9b db  ee e9 fe 97 fa 88 f6 95   I.p..S.. ........
+    00000480  c5 00 54 92 1e                                     ..T..
+\end{lstlisting}
+
+Dane wyjustowane do lewej strony są danymi wysłanymi przez klienta do serwera. Pozostałe dane są danymi wysłanymi przez serwera do klienta. \\ \par
+Pierwszy bajt 0x17 wyznacza protokół aplikacji danych protokołu SSL/TLS. Kolejne dwa bajty 0x0303 są wersją protokołu, a następujące dwa 0x0040 są długością wiadomości. Ostatnie 20 lub 16 bajtów przeznaczone są do weryfikacji. Bajty pośrodku są zaszyfrowane kluczem ustalonym poprzez \textit{SSL Handshake}.
+
+\section{Alerty SSL/TLS}
+Jeżeli wystąpią błędy w trakcie komunikacji, weryfikacji danych lub inne, może zostać wysłany blok danych który nazywany jest \textit{SSL Alert}. Składa się on z bajtu 0x15, który wyznacza protokół alertów protokołu SSL/TLS. Kolejne dwa bajty będą wersją protokołu, a następne dwa długością wiadomości. W tej wiadomości pierwszy bajt będzie wyznaczał typ błędu, kolejne dwa bajty będą długością, a za tymi może się znaleźć dalsza informacja o błędzie.
+
+
+% CHAPTER  3
+
+\chapter{Wybrane ataki na system RSA}
+W tym rodziale przedstawiono wybrane ataki na system RSA. Dla niektórych przedstawiono też przykład z implementacją w kodzie. Przykłady te można uruchomić korzystając z programu zapisanego jako \textit{ssl\_attack}. Ponieważ program został skompilowany na systemie Unix, może być konieczna rekompilacja.
+
+\section{Rozkład dużych liczb}
+W systemie RSA liczba $n$ w kluczu publicznym jest iloczynem dwóch liczb pierwszych. Tę liczby nie są znane innym użytkownikom natomiast potrzebne są do obliczenia klucza prywatnego i publicznego. Znając rozkład liczby $n$ można obliczyć $\varphi(n)$, które służy do wyznaczania kluczy. \\ \par
+
+Rozłożenie dużych liczb naturalnych na czynniki pierwsze jest niezwykle trudne. Istnieją algorytmy szukające dzielników danej liczby, które działają szybciej niż dzielenie liczby $n$ przez wszystkie liczby od niej mniejsze. Te algorytmy są jednak za wolne, żeby w odpowiednio krótkim czasie rozłożyć dużą liczbę $n$.  \\
+
+Istnieją takie liczby $n = pq$, gdzie $p$ i $q$ są pierwsze, dla których znalezienie rozkładu jest znacznie szybsze niż dla dowolnego iloczynu liczb pierwszych. W ogólności, jeżeli da się rozłożyć liczbę $n$ systemu RSA w krótkim czasie, to system ten zostaje złamany. \\ \par
+
+\begin{fakt}{\cite{survey}}
+Niech para $(n, e)$ będzie kluczem publicznym systemu RSA. Jeżeli jest znany rozkład liczby $n$, to można łatwo obliczyć klucz prywatny $d$. Jeżeli natomiast znana jest liczba $d$, to możliwe jest rozłożenie liczby $n$.
+\end{fakt}
+
+Ponieważ znany jest rozkład liczby $n$, to znana jest też wartość funkcji $\varphi(n)$. Z~klucza publicznego znana jest liczba $e$ co oznacza, że można obliczyć klucz prywatny $d$ z równości
+\[ ed = 1 \pmod{\varphi(n)}. \]
+Do tego można wykorzystać rozszerzony algorytm Euklidesa którego implementacja została przedstawiona poniżej.
+
+\lstinputlisting[firstline=24,lastline=58,caption=./ssl\_attack/src/lib.rs od 24 do 58]{./ssl_attack/src/lib.rs}
+
+Jeżeli natomiast znana jest liczba $d$, to należy obliczyć $k = ed - 1$. Z definicji klucza publicznego i prywatnego wiadomo, że $ed = 1 \pmod{\varphi(n)}$. Oznacza to, że liczba $k$ jest krotnością liczby $\varphi(n)$. Ponieważ ta liczba jest parzysta, to $k$ można zapisać jako $k = 2^tr$, gdzie $t\geq1$ i $r$ jest nieparzyste. Z twierdzenia Eulera wynika ponadto, że $g^k = 1$ dla każdej liczby $g \in {0,1,\ldots,n-1}$ względnie pierwszej z $n$. Oznacza to, że $g^{k/2}$ jest pierwiastkiem z jedności modulo $n$. Z chińskiego twierdzenia o resztach, liczba 1 ma cztery pierwiastki modulo iloczyn dwóch różnych liczb pierwszych. Dwa z nich są trywialne: $\pm1$. Pozostałe dwa są równe $\pm x$, gdzie liczba $x$ spełnia następujące warunki:
+\[ \left\{ \begin{array}{c} x = 1 \pmod{p}, \\ x = -1 \pmod{q}. \end{array}\right. \]
+
+Obliczając $\NWD(x-1,n)$ lub $\NWD(x+1,n)$, to ujawniony zostaje jeden z~dzielników $n$, czyli rozkład tej liczby. Za liczbę $x$ podstawiana jest liczba $g^{k / 2^i}$ dla $i = 1,2,\ldots,t$. Jedna z tych liczb da nam szukane dzielniki.
+
+\subsubsection{Przykład}
+Niech kluczem publicznym systemu RSA będzie $(n,e)$ oraz kluczem publicznym będzie $d$ definiowane następująco:
+\begin{align*} n = &1226490591781626370002351544839377770896755 \\
+&2173712358109109112075721236843318505659070 \\
+&8512714409978021061721803238743089377017125 \\
+&2334700978282673811298115272118177831278631 \\
+&9011587166390909385674403046948259826198367 \\
+&1636847777109062306704031853586998589720620 \\
+&5423627992254553582169107812833048282157887 \\
+&28105359, \\ \\
+e = &84617501727888423821133596441571121520815397 \\
+&64322508993444443634950268151893529355553176 \\
+&68245730984973725643733072885360358550027836 \\
+&39020298535325660076402607034399890585937330 \\
+&74789453257322202213902881306468325875198276 \\
+&78558737928425470774472264432568908814208258 \\
+&29634680197242864699416061217480750109412593, \\ \\
+d = &65537.
+\end{align*}
+
+Przyjęto liczbę $g = 3$. Na podstawie powyższego algorytmu i korzystając z kodu przedstawionego poniżej, znaleziono dzielniki liczby $n$. Są to:
+\begin{align*} p = &101580982521687223733614505860249961016617080 \\
+&683998026776387071010688914124676530944235111 \\
+&787000117469428117686781373184946572991308926 \\
+&66639682293044016167,
+\end{align*}
+\begin{align*} q = &120740178066280708051466531963407769267805436 \\
+&654569674267262798361292789200655919705988398 \\
+&343870059984992350359568336187592423358833745 \\
+&94751399006688831577.
+\end{align*}
+
+\lstinputlisting[firstline=116,lastline=156,caption=./ssl\_attack/src/main.rs od 116 do 156]{./ssl_attack/src/main.rs}
+
+
+\section{Wspólny moduł \cite{survey}}
+Aby uniknąć problemu związanego z tworzeniem nowej wartości $n$ dla klucza publicznego systemu RSA, urząd certyfikacji może zastosować tą samą liczbę $n$ dla wielu użytkowników, tworząc inne klucze publiczne i prywatne. Dla użytkownika $i$~zostanie więc stworzony klucz publiczny $(n,e_i)$ oraz klucz prywatny $d_i$. Użytkownik $k$ nie może odszyfrować bezpośrednio wiadomości szyfrowanej kluczem publicznym użytkownika $i$. Natomiast, jak wcześniej pokazano, użytkownik $k$ może znaleźć rozkład liczby $n$ korzystając z klucza publicznego $e_k$ i prywatnego $d_k$. Wtedy jest możliwe obliczenie $\varphi(n)$ oraz, ponieważ $n$ jest takie same dla wielu użytkowników, klucza prywatnego $d_i$ korzystając z metody generacji kluczy.
+
+\section{Atak z wybranym szyfrogramem \cite{survey}}
+System RSA jest wrażliwy na atak z wybranym szyfrogramem (ang. blinding). Niech użytkownicy A i B posługują się komunikacją RSA z ustalonym kluczem publicznym $(n,e)$ i kluczem prywatnym $d$ należącym tylko do użytkownika A. Niech ponadto użytkownik O dysponuje zaszyfrowaną wiadomością $c$ która odpowiada wiadomości $m$. Użytkownik O wybiera liczbę $s$ i tworzy nowy szyfrogram postaci $c' = s^e c \pmod{n}$. Następnie pyta użytkownika A o odszyfrowanie tej wiadomości. Zakładając, że A ją odszyfruje, ponieważ nie wygląda groźnie, użytkownik O może odczytać wiadomość $m$:
+\[ m' = (c')^d \pmod n = (s^e c)^d \pmod n = s \cdot m \pmod n \] czyli \[ m = m' s^{-1} \pmod n \]
+
+
+\section{Mały wykładnik publiczny}
+Dla przyspieszenia szyfrowania można dobrać mały wykładnik $e$, czyli klucz publiczny. Jest to natomiast niebezpieczne dla systemu RSA. Za mały wykładnik uznawane są liczby mniejsze równe 65537. Korzysta się w tym przypadku z twierdzenia Coppersmitha, które zostało podane poniżej:
+
+\begin{twierdzenie}[Coppersmith]{\cite{survey}}
+Niech $n \in \mathbb{Z}$ oraz $f \in \mathbb{Z}[x]$ będzie unormowanym wielomianem stopnia $d$. Niech ponadto $X = n^{\frac{1}{d}-\epsilon}$ dla pewnego $\epsilon > 0$. Wtedy, znając $(n,f)$ użytkownik M może znaleźć wszystkie liczby całkowite $|x_0| < X$ spełniające równanie $f(x_0) = 0 \pmod{n}$. Czas działania jest identyczny do czasu działania algorytmu redukcji bazy sieci (LLL)% nad siecią wymiaru $O(\omega)$ gdzie $\omega = \min(\frac{1}{\epsilon},\log_2n)$.
+\end{twierdzenie}
+
+Twierdzenie to podaje algorytm do znalezienia pierwiastków modulo $n$ danego wielomianu. Wykorzystywana metoda to algorytm redukcji bazy sieci LLL, który bierze nazwę od twórców L. Lovasz, A. Lenstra i H. Lenstra Jr. Algorytm ten jest wykorzystywany powszechnie w atakach na inne systemy kryptograficzne. Nie zostanie on natomiast tutaj rozważany. \\
+
+Rozważony zostanie teraz atak na system RSA, gdzie dla klucza publicznego wybrano liczbę $e = 3$. Atak ten polega na zauważeniu, że część całkowita pierwiastka trzeciego stopnia jest szukanym pierwiastkiem. Należy natomiast rozważyć dwa przypadki. \\
+
+Niech $(n,3)$ będzie kluczem publicznym systemu RSA, a $d$ kluczem prywatnym. Niech ponadto $m$ będzie wiadomością którą będzie szyfrowana. Jeżeli $c = m^3 < n$, to $m = \lfloor c^{1/3} \rfloor$. Jeżeli natomiast $c = m^3 \geq n$, to $m^3 = k \cdot n + c$ dla pewnego $k \in \mathbb{Z}$. Zatem $m = \lfloor ( c + k \cdot n )^{1/3} \rfloor$ dla pewnego $k \in \mathbb{Z}$. Ostatecznie, można sprawdzać kolejno wartości $k$ aż do momentu uzyskania wiadomości ze sensem, lub wiadomości w szukanym formacie.
+
+\subsection{Przykład z implementacją}
+Niech kluczem publicznym systemu RSA będzie para $(n,e)$ zdefiniowana w następujący sposób:
+\begin{align*}
+n = 
+&29331922499794985782735976045591164936683059380558950386560 \\
+&16010574034320151336993900630753116592270894961916269862367 \\
+&53490304308595478257089947083218037053094594380993404277705 \\
+&80064400911431856656901982789948285309956111848686906152664 \\
+&47335094048650745177122343583526016897121008747089444846074 \\
+&55939568405865305279158025414500929465746948095848808966013 \\
+&17519794442862977471129319781313161842056501715040555964011 \\
+&89958900286373086867952718442078901055147506786290773905496 \\
+&61831206214072463985180989811064312192076978702934121764404 \\
+&82900183550467375190239898455201170831410460483829448603477 \\
+&361305838743852756938687673, \\ \\
+e = &3.
+\end{align*}
+Na podstawie informacji wcześniej przedstawionej, wypróbowano wartości $k$ od 1 do 10000 w celu odszyfrowania tajnej wiadomości. Poniżej przedstawiono kod programu.
+
+\lstinputlisting[firstline=74,lastline=114,caption=./ssl\_attack/src/main.rs od 74 do 114]{./ssl_attack/src/main.rs}
+Uzyskano tajną wiadomość ,,Super secret message'' oraz wartość $k = 0$.
+
+\section{Mały wykładnik prywatny}
+Aby przyspieszyć czas odszyfrowania, można dobrać mały klucz prywatny $d$. Jest to natomiast problem dla systemu RSA, ponieważ możliwe jest odgadnięcie klucza prywatnego korzystając z twierdzenia podanego poniżej.
+
+\begin{twierdzenie}[M. Wiener]{\cite{survey}}
+Niech $n = pq$ gdzie $q < p < 2q$. Niech ponadto $d < \frac{1}{3}n^{1/4}$. Wtedy dla $ed = 1 \pmod{\varphi(n)}$ można uzyskać $d$.
+\end{twierdzenie}
+
+Dowód tego twierdzenia polega na pewnych zależnościach aproksymacyjny oraz na ułamkach łańcuchowych. Wiadomo, że jeżeli $ed = 1 \pmod{\varphi(n)}$, to\linebreak$ed = k \cdot \varphi(n) + 1$ czyli $ed - k \cdot \varphi(n) = 1$. Wtedy można zapisać:
+
+\[ \left\lvert \frac{e}{\varphi(n)} - \frac{k}{d} \right\rvert = \frac{1}{d \cdot \varphi(n)}\]
+
+W języku ułamków łańcuchowych oznacza to, że $\frac{k}{d}$ jest przybliżeniem ułamka $\frac{e}{\varphi(n)}$ z błędem $\frac{1}{d \cdot \varphi(n)}$. \\ \par
+
+Dalej, z definicji funkcji Eulera wiadomo, że $\varphi(n) = (p-1)(q-1) = n - p - q + 1$. Ponadto $p + q - 1 < 3 \sqrt{n}$, co oznacza, że $\lvert n - \varphi(n) \rvert < 3 \sqrt{n}$. Zatem atakujący może wykorzystać $n$ na miejscu $\varphi(n)$, co pozwala na dalsze rozważania. Wtedy:
+
+\begin{equation*} \begin{aligned}
+\left\lvert \frac{e}{n} - \frac{k}{d} \right\rvert &= \left\lvert \frac{ed - kn}{nd} \right\rvert  \\
+&= \left\vert \frac{ed - k\varphi(n) - kn + k\varphi(n)}{nd} \right\rvert \\
+&= \left\lvert \frac{1 - k(n - \varphi(n))}{nd} \right\rvert \leq \left\lvert \frac{k \cdot 3 \sqrt{n}}{nd} \right\rvert = \frac{3k}{d\sqrt{n}}
+\end{aligned} \end{equation*}
+
+Ponieważ $k\varphi(n) = ed - 1$ oraz $e < \varphi(n)$, to $k < d$. Z założeń twierdzenia wiadomo, że $d < \frac{1}{3}n^{1/4}$. Oznacza to, że nierówność powyżej jest postaci:
+\[ \left\lvert \frac{e}{n} - \frac{k}{d} \right\rvert \leq \frac{3k}{d\sqrt{n}} \leq \frac{3 \frac{1}{3} n^{1/4}}{d n^{1/2}} = \frac{1}{d n^{1/4}} < \frac{1}{3d^2}\]
+
+Zatem $\frac{k}{d}$ jest przybliżeniem ułamka $\frac{e}{N}$. Te przybliżenia można wyznaczyć korzystając z reduktorów ułamków łańcuchowych.
+
+\subsection{Przykład z implementacją}
+Niech kluczem publicznym systemu RSA będzie para $(n,e)$ zdefiniowana w następujący sposób:
+\begin{align*}
+n =
+&12264905917816263700023515448393777708967552173712358109109 \\
+&11207572123684331850565907085127144099780210617218032387430 \\
+&89377017125233470097828267381129811527211817783127863190115 \\
+&87166390909385674403046948259826198367163684777710906230670 \\
+&40318535869985897206205423627992254553582169107812833048282 \\
+&15788728105359, \\ \\
+e = 
+&84617501727888423821133596441571121520815397643225089934444 \\
+&43634950268151893529355553176682457309849737256437330728853 \\
+&60358550027836390202985353256600764026070343998905859373307 \\
+&47894532573222022139028813064683258751982767855873792842547 \\
+&07744722644325689088142082582963468019724286469941606121748 \\
+&0750109412593.
+\end{align*}
+
+Za pomocą tego klucza zaszyfrowano tajną wiadomość. Na podstawie twierdzenia Wienera oraz korzystając z kodu przedstawionego poniżej, wyznaczono klucz prywatny oraz odszyfrowano wiadomość.
+
+\lstinputlisting[firstline=21,lastline=72,caption=./ssl\_attack/src/main.rs od 21 do 72]{./ssl_attack/src/main.rs}
+
+Uzyskano tajna wiadomość ,,Other Secret Message'' oraz klucz prywatny o wartości: \\
+
+$d = 16947$.
+
+
+\section{Atak z wybranym szyfrogramem Bleichenbachera}
+
+\subsection{PKCS \#1 \cite{advances}}
+W standardzie PKCS \#1 w bloku dedykowanym szyfrowaniu dane są formatowane w następujący sposób. Niech $(n,e)$ będzie kluczem publicznym, a $d$ kluczem prywatnym systemu RSA. Niech $k$ będzie długością bajtową $n$. Wiadomo, że $2^{8(k-1)} \leq n \leq 2^{8k}$. Dla bloku danych $D$ o długości $|D|$ bajtów jest tworzony pseudolosowo łańcuch $PS$ o długości bajtowej $k-3-|D|$, gdzie żaden bajt nie jest zerowy. Blok wiadomości jest tworzony przez konkatenacje bajtową (||): $EB = 00||02||PS||00||D$. Blok ten jest konwertowany w liczbę $x$ i zaszyfrowany $c = x^e \pmod n$. \\
+
+Odbiorca szyfrogramu odszyfrowuje i szuka drugiego zerowego bajta. Ten bajt sygnalizuje koniec bloku uzupełniającego, więc bajty dalej są blokiem danych $D$.
+
+\begin{twierdzenie}[Zgodność PKCS \#1]
+Zaszyfrowany blok danych $EB$ składający się z $k$ bajtów, to jest 
+\[ EB = EB_1||EB_2||\ldots||EB_k \]
+nazywany jest zgodny z PKCS \#1, jeżeli spełnia następujące warunki:
+\begin{itemize}
+\item $EB_1 = 00$.
+\item $EB_2 = 02$.
+\item $EB_3$ do $EB_{10}$ są niezerowe.
+\item Co najmniej jeden z bajtów pomiędzy $EB_{11}$ i $EB_k$ jest 00. 
+\end{itemize}
+\end{twierdzenie}
+
+\subsection{Idea \cite{robot}}
+W tym typie ataku przy wysłaniu szyfrogramu $c$ uzyskana jest informacja tak albo nie, czy wiadomość jest zgodna z PKCS \#1. Zatem strona odpowiadająca działa jako wyrocznia. To jest wystarczające, żeby uzyskać informacje na temat wiadomości jawnej. Niech użytkownik O chce uzyskać wiadomość jawną\linebreak$m = c^d \pmod n$.
+O wybiera liczbę $s$ i oblicza $c' = c \cdot s^e \pmod n$. Wysyła ten szyfrogram do wyroczni i uzyskuje informację, czy jest zgodna z PKCS \#1. Jeżeli odpowiedź jest tak, to O wie, że pierwsze bajty są 00 i 02 zatem, oznaczając $B = 2^{8(k-2)}$
+\[ 2B \leq ms \pmod n \leq 3B \]
+Szukając różne wartości $s_i$ uzyskuje się kolejno nowe przedziały do których może należeć wiadomość $m$. Część wspólna tych przedziałów będzie zawężała możliwe wartości $m$ aż do momentu gdzie będzie możliwa tylko jedna wartość.
+
+
+
+% CHAPTER 4
+
+\chapter{Przykład ataku Bleichenbachera}
+W tym rozdziale opisano własną implementację ataku z wybranymi szyfrogramami Bleichenbachera (ang. Bleichenbacher's choosen ciphertext attack). Opisano także implementację własnego serwera wrażliwego na ten atak oraz możliwe wektory ataku.
+
+\section{Tworzenie certyfikatu SSL i kompilacja}
+Do połączeń z protokołem SSL, konieczne jest posiadanie odpowiedniego certyfikatu. Certyfikat ten zawiera klucz publiczny oraz informacje na temat właściciela certyfikatu, tak jak, nazwa firmy, adres email i inne. Taki certyfikat wygenerowano za pomocą biblioteki \textit{OpenSSL}. \\ \par
+Utworzono certyfikat odpowiadający za własny urząd certyfikacji. Za pomocą tego certyfikatu podpisano certyfikat serwera. Aby stworzyć certyfikat, który zawiera klucz publiczny RSA, należy najpierw stworzyć klucz prywatny. W tym przypadku, plik z kluczem prywatnym zawiera także klucz publiczny. \\ \par
+Certyfikat publiczny urzędu certyfikacji podłączono do klienta, co pozwoli na poprawną weryfikacje certyfikatu serwera. Ten certyfikat można także załadować do normalnej przeglądarki internetowej w celu podłączenia się do serwera, lub wykorzystać do podpisywania innych certyfikatów. \\ \par
+Dla tego projektu utworzono \textit{makefile}, co pozwala na szybkie kompilowanie kodu źródłowego.
+
+\section{Serwer z WolfSSL}
+Na podstawie artykułu \cite{robot} pobrano wrażliwą wersje biblioteki \textit{WolfSSL}. Jest to wersja 3.11.0. Bibliotekę należało skompilować samodzielnie, żeby móc z niej korzystać. Wykonano tą czynność wpisując poniższe komendy do wiersza poleceń systemu zwracając uwagę, żeby znaleźć się w folderze z kodem źródłowym.
+\begin{lstlisting}
+$ ./cofigure --with-openssl --with-lighttpd CPPFLAGS=DWOLFSSK_STATIC_RSA
+$ make
+$ make install
+\end{lstlisting}
+Korzystając z dokumentacji na przykładzie dostępnej wraz z kodem źródłowym, napisano własną wersję serwera. Serwer ten, po podłączeniu z klientem odpowie wiadomością na podstawie wiadomości wysłanej przez klienta.
+\begin{itemize}
+\item Jeżeli serwer uzyska wiadomość ,,get'', to wyśle klientowi tajne hasło.
+\item Jeżeli serwer uzyska wiadomość ,,shutdown'', to wyśle komunikat i ulegnie wyłączeniu.
+\item Jeżeli serwer uzyska inną wiadomość niż powyżej, to wyśle wiadomość głównego przeznaczenia.
+\end{itemize}
+Jeżeli wystąpi błąd, na jakimkolwiek etapie połączenia, to wyświetlony zostanie komunikat, który wyjaśni w skrócie rodzaj błędu. Poniżej przedstawiono kod źródłowy serwera napisany w języku programowania \textbf{C}.
+
+\lstinputlisting[caption=./WebServer/src/server.c]{./WebServer/src/server.c}
+
+Serwer można uruchomić przez wiersz poleceń, natomiast nie jest konieczne wpisywanie argumentów. Port serwera jest ustalony z góry i jest to 9001.
+
+\section{Klient z WolfSSL}
+Klienta napisano także w języku programowania \textbf{C}, korzystając z biblioteki \textit{WolfSSL}. Klient po podłączenia do serwera ma możliwość wysyłania wiadomości i uzyskania, jak wcześniej wspomniano, tajnego hasła lub wiadomości głównego przeznaczenia. Ponadto klient może wyłączyć serwer poprzez wysyłanie komendy ,,shutdown''. Aby uruchomić klienta, należy podać jako argument wierszu poleceń adres IPv4, z którym należy nawiązać połączenie. W tym przypadku wykorzystano adres 127.0.0.1 który odpowiada za aktualną maszynę. Nie należy natomiast podawać portu ze względu na to, że jest on z góry ustalony. Jak wcześniej wspomniano, jest to port 9001. Poniżej przedstawiono kod źródłowy.
+
+\lstinputlisting[caption=./WebServer/src/client.c]{./WebServer/src/client.c}
+
+
+\section{Kod programu do ataku}
+Ze względu na ograniczenia czasowe nie zaimplementowano pełnego kodu programu. Własną wersję programu napisano na podstawie kodu wykonanego w języku Python. Autorzy tego kodu to \textit{Hanno Böck} oraz \textit{Michael Scovetta}. Link tego kodu podano w bibliografii \cite{robot-attack}. \\ \par
+
+Pomimo niepełnego programu, napisano funkcje umożliwiające wysyłanie danych w celu sprawdzenia zgodności z PKCS \#1. Poniżej przedstawiono funkcję, która łączy się z serwerem poprzez SSL/TLS i zwraca jego klucz publiczny.
+
+\lstinputlisting[firstline=64,lastline=80,caption=./ssl\_attack/src/lib.rs od 64 do 80]{./ssl_attack/src/lib.rs}
+
+Poniżej przedstawiono najważniejszą funkcję tego ataku, czyli tą sprawdzającą zgodność PKCS \#1.
+
+\lstinputlisting[firstline=82,lastline=143,caption=./ssl\_attack/src/lib.rs od 82 do 143]{./ssl_attack/src/lib.rs}
+
+Funkcja ta wysyła do serwera \textit{ClientHello}, w którym uwzględniono specyfikacje szyfru zawierające RSA. Wartości losowe z tego bloku są ustalone z góry, ponieważ nie jest koniecznie uzyskania poprawnego połączenia. Z danych otrzymanych od serwera brana jest wersja SSL/TLS, ponieważ jest konieczna do dalszej wymiany danych. Ponieważ blok z szyfrowanymi danymi rozpoczyna się od 0x0100, to po wysłaniu odpowiednich bajtów z długościami, zrobiono konkatenację z danymi, które są sprawdzane. Wysłany jest \textit{ChangeCipherSpec}, a następnie odczytywane są dane od serwera. W całym kodzie sprawdzane są błędy. W ostatnim czytaniu spodziewany jest błąd, dlatego rozpatrywany jest osobno. \\ \par
+Funkcja zwraca odpowiedź (and. result) która może być łańcuchem lub błędem. Jeżeli nie nastąpią problemy, to odpowiedź przyjmie wartość pustego łańcucha ..''. W przeciwnym wypadku odpowiedź będzie błędem zawierającym rodzaj błędu. \\ \par
+
+Poniżej przedstawiono kod programu wykorzystujący powyższe funkcje.
+
+\lstinputlisting[firstline=206,lastline=315,caption=./ssl\_attack/src/main.rs od 206 do 315]{./ssl_attack/src/main.rs}
+
+Ta funkcja sprawdza cztery przypadki: jeden zgodny z PKCS \#1, jeden z błędnymi początkowymi bajtami, jeden z błędnym położeniem drugiego zerowego bajta, a~jeden z błędną wersją SSL/TLS. Idea za tym jest taka, żeby błąd drugiego przypadku różnił się od pozostałych dwóch błędnych formatowań. Wtedy można rozróżnić czy wiadomość jawna ma zerowy bajt na początku, a zatem wyznaczyć przedziały. \\ \par
+
+Dalsza część kodu \cite{advances} polega na sprawdzaniu wartości $s_0$, dla których $c (s_0)^e \pmod{n}$ jest zgodne z PKCS \#1. Wyznacza się wtedy początkowy przedział $M_0 = [2B, 3B -1]$, gdzie $B = 2^{8(k-2)}$, a $k$ jest długością bajtową liczby $n$. Ten proces można pominąć, jeżeli posiada się już zgodny szyfrogram. W kodzie ten szyfrogram znajduje się pod \textit{c\_str} i został także pokazany w rozdziale drugim. \\ \par
+
+Dalej program powinien szukać przedziałów, w których może się odszyfrowana wiadomość znajdować. W przypadku, gdy pierwszy przedział został już znaleziony, to program kolejno musiał by sprawdzać wartości $s_i$ i $r_i$ takie, że
+\[ r_i \geq \frac{2 (bs_{i-1} -2B)}{n} \] oraz
+\[ \frac{2B + r_i n}{b} \leq s_i \leq \frac{3B + r_i n}{a}. \]
+W przypadku, gdy został już znaleziony więcej niż jeden przedział, to szukane są kolejne wartości wartości $s_i > s_{i-1}$ dla których $c \cdot (s_i)^e \pmod{n}$ jest zgodne z PKCS \#1. \\ \par
+Przy znalezieniu wartości $s_i$ obliczany jest kolejny przedział zgodnie ze wzorem
+\[ M_i =  \bigcup_{(a,b,r)} \left\{\left[ \max\left(a,\left\lceil\frac{2B+rn}{s_i}\right\rceil\right), \min\left(b,\left\lfloor\frac{3B-1+rn}{s_i}\right\rfloor\right) \right]\right\}, \]
+gdzie $[a,b] \in M_{i-1}$ oraz $\frac{as_i-3B+1}{n} \leq r \leq \frac{bs_i-2B}{n}$. \\ \par
+W pewnym momencie lewa i prawa strona przedziału będą równe, co oznacza, że znaleziony został tekst jawny. W przypadku własnego serwera, zostawiono program pobrany z \cite{robot-attack} na dwa dni. Wykonał w tym czasie około 3000000 kwerend, z których żadna nie oddała zgodność z PKCS \#1. Potwierdza to, że wyrocznia jest słaba. 
+
+
+\section{Dalsze możliwości rozwoju}
+Napisany program można dostosować, żeby wykrywał wrażliwość na ten atak w~innych także serwerach i aplikacjach. Ponieważ konieczne jest wysyłanie danych do serwera, optymalizacja kodu nie wpływa na prędkość działania. Można natomiast stosować bardziej optymalne biblioteki do liczb dowolnej dokładności. \\ \par
+Co do programów omówionych we wcześniejszym rozdziale, także można takie optymalizacje wykonać, oraz dostosować skrypt tak, aby obejmował więcej przypadków.
+
+
+
+%%%%%%%%%%%%%      B I B L I O G R A F I A
+
+\begin{thebibliography}{9}
+
+%\bibitem{royden} H.L. Royden, \textit{Real analysis}, Third edition. Macmillan Publishing Company, New York, (1988).
+
+%\bibitem{rudin} W. Rudin, \textit{Podstawy analizy matematycznej}, wydanie trzecie zmienione, Wydawnictwo Naukowe PWN, Warszawa, (1996).
+
+\bibitem{handbook} Alfred J. Menezes, Paul C. van Oorschot, Scott A. Vanstone, \textit{Kryptografia stosowana}, WNT, Warszawa, 2005
+
+\bibitem{ssl} Rolf Oppliger, \textit{SSL and TLS Theory and Practice}, ARTECH HOUSE, Norwood, 2016
+
+\bibitem{survey} Dan Boneh \textit{Twenty Years of Attacks on the RSA Cryptosystem}, Notices of the American Mathematical Society, volume 46, 1999
+
+\bibitem{advances} Hugo Krawczyk (ed.), \textit{Advances in cryptology - Crypto '98}, 18th Annual International Cryptology Conference, Springer, Santa Barbara, California, USA, [IACR]. - Berlin ; Heidelberg ; New York ; Barcelona ; Budapest ; Hong Kong ;
+London ; Milan ; Paris ; Singapore ; Tokyo,
+(August 23 - 27, 1998).
+
+\bibitem{robot} Hanno Böck (unaffiliated), Juraj Somorovsky, Craig Young, \textit{Return Of Bleichenbacher's Oracle Threat (ROBOT)}, Usenix, Baltimore USA, August 15-17 2018
+
+\bibitem{fermat} Calvin T. Long, \textit{Elementary Introduction to Number Theory}, D. C. HEATH AND COMPANY, Boston, 1965
+
+\bibitem{markowe} Marek Zakrzewski, \textit{Markowe Wykłady z Matematyki}, GiS, Wrocław, 2017
+
+\bibitem{robot-attack} Hanno Böck, Michael Scovetta, https://github.com/robotattackorg/robot-detect
+
+\end{thebibliography}
+
+
+\chapter*{Dodatek A}
+Kod programu serwera wykorzystanego w ostatnim rozdziale.
+\lstinputlisting{./WebServer/src/server.c}
+
+\chapter*{Dodatek B}
+Kod programu klienta wykorzystanego w ostatnim rozdziale.
+\lstinputlisting{./WebServer/src/client.c}
+
+\chapter*{Dodatek C}
+Kod programu zawierający pomocnicze funkcje do wybranych ataków na system RSA.
+\lstinputlisting{./ssl_attack/src/lib.rs}
+
+\chapter*{Dodatek D}
+Kod programu zawierający główne przykłady ataków na system RSA.
+\lstinputlisting{./ssl_attack/src/main.rs}
+
+
+\chapter*{Strzeszczenie}
+Celem pracy jest przedstawienie systemu kryptograficznego RSA z wybranymi atakami na ten system oraz przedstawienie podstawowych pojęć dotyczących protokołu SSL/TLS. Opisano podstawowe pojęcia matematyczne służące do zrozumienia działania systemu RSA oraz niektórych ataków na ten system. Został ponadto przedstawiony własny przykład działania systemu RSA. Dla wybranych ataków na ten system została także zrobiona implementacja w kodzie posługując się nowoczesnym językiem programowania Rust.
+Protokół SSL/TLS został omówiony na podstawie własnego przykładu. Jeden z przedstawionych ataków na system RSA korzystający z przedstawionego protokołu SSL/TLS, został on omówiony i w części zaimplementowany w kodzie. Do tego ataku stworzono własny serwer napisany w znanym języku programowania C. Atak został w części przeprowadzony ze względu na słabą wyrocznie tego serwera. Brak wyników w dużym okresie czasowym natomiast potwierdził słabość tej wyroczni.
+
+\chapter*{Abstract}
+This paper's purpose is to show the RSA cryptosystem with some chosen attacks on this system and to show basic concepts regarding the SSL/TLS protocol. Mathematical principles are described to help understand the functioning of the RSA cryptosystem and some of the chosen attacks on this cryptosystem. Moreover, a personal example for this cryptosystem is illustrated. For some of the chosen attacks an implementation was written in Rust, a modern programming language. The SSL/TLS protocol is described using a very own example. One of the chosen attacks on the RSA cryptosystem, which uses the SSL/TLS protocol, is illustrated and partially code implemented. For this attack a personal server was written using C, a known programming language. The attack was partially completed due to the server's weak oracle. The lack of results in a long period of time, though, confirmed the oracle's weakness.
+
+\end{document}

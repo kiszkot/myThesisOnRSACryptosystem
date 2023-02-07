@@ -1,0 +1,8 @@
+Generated keyfile is key.pem rsa:2048
+
+Generated certificate with key is cert.pem rsa:2048 "password"
+
+Generated CA certificate is rootCA
+"password"
+
+https://www.baeldubg.com/openssl-self-signed-cert
